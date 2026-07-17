@@ -18,3 +18,14 @@ export interface CategoryResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CategoryCreateRequest {
+  name: string;
+  genderClassification: GenderClassification;
+  divisionLabel?: string;
+  description?: string;
+  displayOrder: number;
+  active: boolean;
+}
+
+export type CategoryUpdateRequest = CategoryCreateRequest;
