@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SIVARFEST Web
 
-## Getting Started
+Next.js frontend for the SIVARFEST functional-fitness competition portal. It provides public competition information and the first administration workflows while consuming the separate Spring Boot REST API.
 
-First, run the development server:
+## Current scope
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Implemented:
+
+- Public SIVARFEST homepage
+- Public athlete listing
+- Public event/workout listing
+- Category and athlete summary data
+- Admin login and logout
+- Server-side admin route protection
+- Admin dashboard
+- Competition list, creation, editing, and archival
+
+Planned but not implemented yet:
+
+- Admin category management
+- Admin athlete management
+- Admin event management
+- Heat schedule and heat administration
+- Score entry and leaderboards
+- Athlete dashboard and check-in
+- Announcements, sponsors, and gallery management
+- Online registration and payment experience (Phase 2)
+
+See [docs/implementation-status.md](docs/implementation-status.md) for the detailed status.
+
+## Technology
+
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Axios
+- React Hook Form and Zod
+- TanStack Query
+- shadcn/Radix-style UI components
+
+## Related backend
+
+The API is maintained separately in [`competition-portal-api`](https://github.com/V4LERIAN0/competition-portal-api).
+
+Development topology:
+
+```text
+Next.js frontend  http://localhost:3000
+Spring Boot API   http://localhost:8081/api
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Requirements
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- A current Node.js LTS release
+- npm
+- The backend running on port 8081
 
-## Learn More
+### Environment
 
-To learn more about Next.js, take a look at the following resources:
+Create `.env.local` in the repository root:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8081/api
+NEXT_PUBLIC_COMPETITION_SLUG=sivarfest-2026
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Environment files are intentionally ignored by Git.
 
-## Deploy on Vercel
+### Install and run
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+npm install
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open `http://localhost:3000`.
+
+If Turbopack cannot create its local persistence database on Windows, first repair the affected folder permissions. Webpack can be used temporarily for diagnosis:
+
+```powershell
+npm run dev -- --webpack
+```
+
+## Current routes
+
+Public:
+
+```text
+/
+/athletes
+/events
+/login
+```
+
+Admin:
+
+```text
+/admin
+/admin/competitions
+/admin/competitions/new
+/admin/competitions/[competitionId]/settings
+```
+
+The sidebar currently contains links for category, athlete, and event administration, but those destination pages have not been built yet.
+
+## Competition selection
+
+The public site currently displays one configured competition:
+
+```env
+NEXT_PUBLIC_COMPETITION_SLUG=sivarfest-2026
+```
+
+The backend supports multiple competitions. Future frontend routing can expose historical or alternate events through routes such as:
+
+```text
+/competitions/[slug]
+```
+
+The root route can continue to display the currently promoted SIVARFEST edition.
+
+## Authentication
+
+Login requests are sent to the Spring Boot API. The API sets an HTTP-only JWT cookie. Protected server components forward incoming cookies to the backend and redirect unauthorized users to `/login`.
+
+## Security notes
+
+- Never commit `.env.local` or production environment values.
+- Do not place secrets in `NEXT_PUBLIC_*` variables; they are exposed to browser code.
+- Development credentials must not be retained for production.
+- Do not render private athlete contact or payment information publicly.
+
+## Next milestone
+
+The next feature is complete admin category management. It will establish the reusable admin CRUD pattern for athlete and event management.
