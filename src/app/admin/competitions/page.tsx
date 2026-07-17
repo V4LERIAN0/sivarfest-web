@@ -65,6 +65,13 @@ export default async function AdminCompetitionsPage() {
                       Categories
                     </Link>
 
+                    <Link
+                      href={`/admin/competitions/${competition.id}/athletes`}
+                      className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-slate-900"
+                    >
+                      Athletes
+                    </Link>
+
                     {competition.status !== "ARCHIVED" && (
                       <form
                         action={async () => {
