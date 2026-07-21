@@ -5,6 +5,15 @@ function formatScoreType(scoreType: string) {
   return scoreType.replaceAll("_", " ");
 }
 
+function formatDuration(totalSeconds: number) {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  if (minutes === 0) return `${seconds} sec`;
+  if (seconds === 0) return `${minutes} min`;
+  return `${minutes} min ${seconds} sec`;
+}
+
 export default async function EventsPage() {
   const events = await getPublicEvents();
 
@@ -36,7 +45,7 @@ export default async function EventsPage() {
 
                 {event.timeCapSeconds && (
                   <span className="rounded-full border border-slate-700 px-3 py-1 text-xs font-bold text-slate-300">
-                    Cap: {Math.floor(event.timeCapSeconds / 60)} min
+                    Cap: {formatDuration(event.timeCapSeconds)}
                   </span>
                 )}
               </div>
