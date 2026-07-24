@@ -13,6 +13,12 @@ import {
   GenerateHeatsForm,
 } from "@/features/heats/HeatManagerForms";
 import { getAdminHeats } from "@/features/heats/heats.api";
+import { removeJudgeAssignmentAction } from "@/features/judges/judge.actions";
+import { JudgeAssignmentForm } from "@/features/judges/JudgeForms";
+import {
+  getAdminHeatJudgeAssignments,
+  getAdminJudges,
+} from "@/features/judges/judges.api";
 import Link from "next/link";
 
 export default async function AdminHeatsPage({
@@ -31,7 +37,20 @@ export default async function AdminHeatsPage({
     getAdminCategories(competitionId),
   ]);
   const activeHeats = heats.filter((heat) => heat.status !== "CANCELLED");
-  const maxNumber = Math.max(0, ...activeHeats.map((heat) => heat.heatNumber));
+  const [judges, assignmentLists] = await Promise.all([
+    getAdminJudges(competitionId),
+    Promise.all(
+      activeHeats.map((heat) => getAdminHeatJudgeAssignments(heat.id))
+    ),
+  ]);
+  const judgeAssignments = new Map(
+    assignmentLists.flat().map((assignment) => [
+      assignment.heatAssignmentId,
+      assignment,
+    ])
+  );
+  const historicalHeats = heats.filter((heat) => heat.status === "CANCELLED");
+  const maxNumber = Math.max(0, ...heats.map((heat) => heat.heatNumber));
   const eligibleAthletes = athletes.filter(
     (athlete) =>
       athlete.status !== "WITHDRAWN" && athlete.status !== "DISQUALIFIED"
@@ -51,7 +70,7 @@ export default async function AdminHeatsPage({
         </p>
         <h1 className="mt-3 text-4xl font-black">Heat management</h1>
         <p className="mt-2 text-slate-400">
-          {event.name} · Schedule heats and place athletes by lane or station.
+          {event.name} · Schedule heats, place athletes, and manage lanes.
         </p>
       </div>
 
@@ -75,9 +94,9 @@ export default async function AdminHeatsPage({
 
       <div className="mt-10 flex items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-black">Heats</h2>
+          <h2 className="text-2xl font-black">Active heats</h2>
           <p className="mt-1 text-sm text-slate-400">
-            {activeHeats.length} total
+            {activeHeats.length} active · {historicalHeats.length} cancelled
           </p>
         </div>
         <Link
@@ -90,11 +109,11 @@ export default async function AdminHeatsPage({
 
       <div className="mt-5 space-y-6">
         {activeHeats.map((heat) => {
-          const usedPositions = new Set(
+          const usedLanes = new Set(
             heat.assignments.map((assignment) => assignment.positionNumber)
           );
-          let nextPosition = 1;
-          while (usedPositions.has(nextPosition)) nextPosition += 1;
+          let nextLane = 1;
+          while (usedLanes.has(nextLane)) nextLane += 1;
           return (
             <article
               key={heat.id}
@@ -130,7 +149,7 @@ export default async function AdminHeatsPage({
                     )}
                   >
                     <button className="rounded-lg border border-red-500/40 px-3 py-2 text-xs font-bold text-red-200 hover:bg-red-500/10">
-                      Delete
+                      Cancel
                     </button>
                   </form>
                 </div>
@@ -143,6 +162,7 @@ export default async function AdminHeatsPage({
                       <th className="pb-3">Athlete</th>
                       <th className="pb-3">Category</th>
                       <th className="pb-3">Position</th>
+                      <th className="pb-3">Judge</th>
                       <th className="pb-3 text-right">Action</th>
                     </tr>
                   </thead>
@@ -168,6 +188,31 @@ export default async function AdminHeatsPage({
                             assignment={assignment}
                           />
                         </td>
+                        <td className="py-3">
+                          <div className="flex items-center gap-3">
+                            <JudgeAssignmentForm
+                              competitionId={competitionId}
+                              eventId={eventId}
+                              positionId={assignment.id}
+                              judges={judges}
+                              assignment={judgeAssignments.get(assignment.id)}
+                            />
+                            {judgeAssignments.has(assignment.id) && (
+                              <form
+                                action={removeJudgeAssignmentAction.bind(
+                                  null,
+                                  competitionId,
+                                  eventId,
+                                  judgeAssignments.get(assignment.id)!.id
+                                )}
+                              >
+                                <button className="text-xs font-bold text-red-300 hover:text-red-200">
+                                  Remove judge
+                                </button>
+                              </form>
+                            )}
+                          </div>
+                        </td>
                         <td className="py-3 text-right">
                           <form
                             action={removeAssignmentAction.bind(
@@ -187,7 +232,7 @@ export default async function AdminHeatsPage({
                     {heat.assignments.length === 0 && (
                       <tr>
                         <td
-                          colSpan={4}
+                          colSpan={5}
                           className="border-t border-slate-800 py-5 text-center text-slate-500"
                         >
                           No athletes assigned.
@@ -199,14 +244,14 @@ export default async function AdminHeatsPage({
               </div>
               <div className="mt-5 border-t border-slate-800 pt-4">
                 <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">
-                  Add athlete · lane or station number
+                  Add athlete · lane · station
                 </p>
                 <AssignAthleteForm
                   competitionId={competitionId}
                   eventId={eventId}
                   heatId={heat.id}
                   athletes={eligibleAthletes}
-                  nextPosition={nextPosition}
+                  nextPosition={nextLane}
                 />
               </div>
             </article>
@@ -214,11 +259,26 @@ export default async function AdminHeatsPage({
         })}
         {activeHeats.length === 0 && (
           <p className="rounded-2xl border border-dashed border-slate-700 py-12 text-center text-slate-400">
-            No heats. Create one manually or generate them randomly.
+            No active heats. Create one manually or generate them randomly.
           </p>
         )}
       </div>
 
+      {historicalHeats.length > 0 && (
+        <details className="mt-8 rounded-2xl border border-slate-800 p-5">
+          <summary className="cursor-pointer font-black">
+            Cancelled heat history ({historicalHeats.length})
+          </summary>
+          <div className="mt-4 space-y-2 text-sm text-slate-400">
+            {historicalHeats.map((heat) => (
+              <p key={heat.id}>
+                Heat {heat.heatNumber}: {heat.name} · {heat.assignedCount} stored
+                assignments · hidden publicly
+              </p>
+            ))}
+          </div>
+        </details>
+      )}
     </div>
   );
 }

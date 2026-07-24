@@ -36,6 +36,12 @@ export function LoginForm() {
         return;
       }
 
+      if (user.role === "JUDGE") {
+        router.push("/judge");
+        router.refresh();
+        return;
+      }
+
       router.push("/");
       router.refresh();
     } catch {

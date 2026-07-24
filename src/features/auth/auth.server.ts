@@ -44,3 +44,11 @@ export async function requireAdminServer() {
 
   return user;
 }
+
+export async function requireJudgeServer() {
+  const user = await getCurrentUserServer();
+  if (!user || user.role !== "JUDGE") {
+    redirect("/login");
+  }
+  return user;
+}
