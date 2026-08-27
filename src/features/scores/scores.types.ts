@@ -88,3 +88,8 @@ export interface ScoreAuditResponse {
   reason: string | null;
   occurredAt: string;
 }
+
+export interface ScoreFormState {
+  error: string | null;
+  success?: string | null;
+}

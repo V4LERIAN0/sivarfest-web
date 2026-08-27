@@ -2,9 +2,8 @@ import Link from "next/link";
 import { getAdminEvent } from "@/features/events/events.api";
 import { getAdminHeats } from "@/features/heats/heats.api";
 import { getAdminEventLeaderboardPreview } from "@/features/leaderboards/leaderboards.api";
-import type { EventLeaderboardRow } from "@/features/leaderboards/leaderboards.types";
 import { getAdminEventScores } from "@/features/scores/scores.api";
-import type { ScoreResponse } from "@/features/scores/scores.types";
+import { ScoreEntryForm } from "@/features/scores/ScoreEntryForm";
 
 interface HeatPosition {
   heatName: string;
@@ -188,17 +187,21 @@ export default async function AdminEventScoresPage({
                           )}
                         </td>
 
-                        <td className="px-4 py-4">
-                          <p className="font-bold">
-                            {scoreLabel(row, score)}
-                          </p>
+                        <td className="px-4 py-4 align-top">
+  <ScoreEntryForm
+    competitionId={competitionIdNumber}
+    athleteId={row.athleteId}
+    event={event}
+    score={score}
+    scoreDisplay={row.scoreDisplay}
+  />
 
-                          {score?.rejectionReason && (
-                            <p className="mt-1 max-w-xs text-xs text-red-300">
-                              {score.rejectionReason}
-                            </p>
-                          )}
-                        </td>
+  {score?.rejectionReason && (
+    <p className="mt-2 max-w-xs text-xs text-red-300">
+      {score.rejectionReason}
+    </p>
+  )}
+</td>
 
                         <td className="px-4 py-4 text-slate-300">
                           {row.tiebreakDisplay ?? "—"}
@@ -271,21 +274,6 @@ function SummaryCard({
       <p className="mt-2 text-3xl font-black">{value}</p>
     </div>
   );
-}
-
-function scoreLabel(
-  row: EventLeaderboardRow,
-  score?: ScoreResponse
-) {
-  if (row.scoreDisplay) {
-    return row.scoreDisplay;
-  }
-
-  if (score?.status === "REJECTED") {
-    return "Rejected score";
-  }
-
-  return "Not entered";
 }
 
 function statusClass(status: string | null) {
