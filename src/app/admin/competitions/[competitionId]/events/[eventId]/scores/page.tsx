@@ -4,6 +4,7 @@ import { getAdminHeats } from "@/features/heats/heats.api";
 import { getAdminEventLeaderboardPreview } from "@/features/leaderboards/leaderboards.api";
 import { getAdminEventScores } from "@/features/scores/scores.api";
 import { ScoreEntryForm } from "@/features/scores/ScoreEntryForm";
+import { ScoreLifecycleActions } from "@/features/scores/ScoreLifecycleActions";
 
 interface HeatPosition {
   heatName: string;
@@ -207,15 +208,24 @@ export default async function AdminEventScoresPage({
                           {row.tiebreakDisplay ?? "—"}
                         </td>
 
-                        <td className="px-4 py-4">
-                          <span
-                            className={`rounded-full px-3 py-1 text-xs font-bold ${statusClass(
-                              status
-                            )}`}
-                          >
-                            {status ?? "NOT ENTERED"}
-                          </span>
-                        </td>
+                        <td className="px-4 py-4 align-top">
+  <span
+    className={`rounded-full px-3 py-1 text-xs font-bold ${statusClass(
+      status
+    )}`}
+  >
+    {status ?? "NOT ENTERED"}
+  </span>
+
+  {score && (
+    <div className="mt-3 min-w-40">
+      <ScoreLifecycleActions
+        competitionId={competitionIdNumber}
+        score={score}
+      />
+    </div>
+  )}
+</td>
 
                         <td className="px-4 py-4 text-center font-black">
                           {row.rank === null

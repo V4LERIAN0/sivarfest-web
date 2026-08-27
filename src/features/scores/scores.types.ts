@@ -13,6 +13,14 @@ export type ScoreStatus =
   | "PUBLISHED"
   | "LOCKED";
 
+  export type ScoreLifecycleAction =
+  | "VALIDATE"
+  | "REJECT"
+  | "PUBLISH"
+  | "LOCK"
+  | "UNLOCK"
+  | "REOPEN";
+
 export type ScoreAuditAction =
   | "CREATED"
   | "UPDATED"
