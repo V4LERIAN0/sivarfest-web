@@ -1,3 +1,9 @@
+import type {
+  ScoreType,
+  TiebreakType,
+  WeightUnit,
+} from "@/features/events/events.types";
+
 export interface JudgeResponse {
   id: number;
   competitionId: number;
@@ -33,6 +39,14 @@ export interface JudgeAssignmentResponse {
   eventId: number;
   eventCode: string;
   eventName: string;
+  scoreType: ScoreType;
+  timeCapSeconds: number | null;
+  cappedScoringEnabled: boolean;
+  weightUnit: WeightUnit | null;
+  tiebreakType: TiebreakType;
+  tiebreakLabel: string | null;
+  tiebreakRequired: boolean;
+  tiebreakWeightUnit: WeightUnit | null;
   heatId: number;
   heatName: string;
   heatNumber: number;

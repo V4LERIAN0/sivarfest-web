@@ -1,6 +1,11 @@
-import { getFormatter, getTranslations } from "next-intl/server";
+import {
+  getFormatter,
+  getTranslations,
+} from "next-intl/server";
 
 import { getMyJudgeAssignments } from "@/features/judges/judges.api";
+import { getJudgeAssignmentScore } from "@/features/scores/scores.api";
+import { JudgeScoreEntryForm } from "@/features/scores/JudgeScoreEntryForm";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +15,12 @@ export default async function JudgeDashboardPage() {
     getTranslations("Judging"),
     getFormatter(),
   ]);
+
+  const scores = await Promise.all(
+    assignments.map((assignment) =>
+      getJudgeAssignmentScore(assignment.id)
+    )
+  );
 
   return (
     <div>
@@ -26,13 +37,16 @@ export default async function JudgeDashboardPage() {
       </p>
 
       <div className="mt-8 grid gap-5 md:grid-cols-2">
-        {assignments.map((assignment) => {
+        {assignments.map((assignment, index) => {
           const scheduledTime = assignment.scheduledTime
-            ? format.dateTime(new Date(assignment.scheduledTime), {
-                dateStyle: "medium",
-                timeStyle: "short",
-                hour12: true,
-              })
+            ? format.dateTime(
+                new Date(assignment.scheduledTime),
+                {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                  hour12: true,
+                }
+              )
             : t("dashboard.timeNotScheduled");
 
           return (
@@ -61,7 +75,9 @@ export default async function JudgeDashboardPage() {
               </div>
 
               <div className="mt-5 border-t border-slate-800 pt-5">
-                <p className="font-black">{assignment.heatName}</p>
+                <p className="font-black">
+                  {assignment.heatName}
+                </p>
 
                 <p className="mt-1 text-sm text-slate-400">
                   {scheduledTime}
@@ -77,6 +93,13 @@ export default async function JudgeDashboardPage() {
                 <p className="text-sm text-slate-400">
                   {assignment.categoryName}
                 </p>
+              </div>
+
+              <div className="mt-5 border-t border-slate-800 pt-5">
+                <JudgeScoreEntryForm
+                  assignment={assignment}
+                  score={scores[index]}
+                />
               </div>
             </article>
           );
