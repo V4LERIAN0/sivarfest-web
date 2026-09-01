@@ -15,6 +15,9 @@ export function PublicNavbar() {
           <Link href="/events" className="hover:text-white">
             Events
           </Link>
+          <Link href="/leaderboard" className="hover:text-white">
+            Leaderboard
+          </Link>
           <Link href="/heats" className="hover:text-white">
             Heats
           </Link>
