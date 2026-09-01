@@ -68,6 +68,12 @@ export default async function AdminEventsPage({
                 <td className="px-4 py-3">
                   <div className="flex justify-end gap-2">
                     <Link
+  href={`/admin/competitions/${id}/events/${event.id}/scores`}
+  className="rounded-lg border border-emerald-500/50 px-3 py-2 text-xs font-bold text-emerald-200 hover:bg-emerald-500/10"
+>
+  Scores
+</Link>
+                    <Link
                       href={`/admin/competitions/${id}/events/${event.id}/heats`}
                       className="rounded-lg border border-orange-500/50 px-3 py-2 text-xs font-bold text-orange-200 hover:bg-orange-500/10"
                     >

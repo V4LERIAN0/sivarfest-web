@@ -1,5 +1,6 @@
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
 import { getPublicHeats } from "@/features/heats/heats.api";
+export const dynamic = "force-dynamic";
 
 export default async function PublicHeatsPage() {
   const heats = await getPublicHeats();
