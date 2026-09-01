@@ -4,7 +4,17 @@ import { logout } from "@/features/auth/auth.api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function LogoutButton() {
+type LogoutButtonProps = {
+  label?: string;
+  loadingLabel?: string;
+  redirectTo?: string;
+};
+
+export function LogoutButton({
+  label = "Logout",
+  loadingLabel = "Signing out...",
+  redirectTo = "/login",
+}: LogoutButtonProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -13,7 +23,7 @@ export function LogoutButton() {
 
     try {
       await logout();
-      router.push("/login");
+      router.push(redirectTo);
       router.refresh();
     } finally {
       setIsLoading(false);
@@ -27,7 +37,7 @@ export function LogoutButton() {
       disabled={isLoading}
       className="rounded-lg px-3 py-2 text-left text-sm text-slate-300 hover:bg-slate-900 hover:text-white disabled:opacity-60"
     >
-      {isLoading ? "Signing out..." : "Logout"}
+      {isLoading ? loadingLabel : label}
     </button>
   );
 }

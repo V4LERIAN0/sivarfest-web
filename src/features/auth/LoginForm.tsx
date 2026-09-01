@@ -1,11 +1,20 @@
 "use client";
 
-import { login } from "@/features/auth/auth.api";
-import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export function LoginForm() {
+import { login } from "@/features/auth/auth.api";
+
+type LoginFormProps = {
+  judgeDestination?: string;
+};
+
+export function LoginForm({
+  judgeDestination = "/judge",
+}: LoginFormProps) {
   const router = useRouter();
+  const t = useTranslations("Auth");
 
   const [email, setEmail] = useState("admin@sivarfest.fit");
   const [password, setPassword] = useState("Admin123!");
@@ -37,7 +46,7 @@ export function LoginForm() {
       }
 
       if (user.role === "JUDGE") {
-        router.push("/judge");
+        router.push(judgeDestination);
         router.refresh();
         return;
       }
@@ -45,7 +54,7 @@ export function LoginForm() {
       router.push("/");
       router.refresh();
     } catch {
-      setError("Invalid email or password.");
+      setError(t("invalidCredentials"));
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +63,10 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="text-sm font-bold text-slate-200">Email</label>
+        <label className="text-sm font-bold text-slate-200">
+          {t("email")}
+        </label>
+
         <input
           type="email"
           value={email}
@@ -66,13 +78,16 @@ export function LoginForm() {
       </div>
 
       <div>
-        <label className="text-sm font-bold text-slate-200">Password</label>
+        <label className="text-sm font-bold text-slate-200">
+          {t("password")}
+        </label>
+
         <input
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none ring-orange-500 focus:ring-2"
-          placeholder="Your password"
+          placeholder={t("passwordPlaceholder")}
           required
         />
       </div>
@@ -88,7 +103,7 @@ export function LoginForm() {
         disabled={isLoading}
         className="w-full rounded-xl bg-orange-500 px-5 py-3 text-sm font-black text-black transition hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isLoading ? "Signing in..." : "Sign in"}
+        {isLoading ? t("signingIn") : t("signIn")}
       </button>
     </form>
   );

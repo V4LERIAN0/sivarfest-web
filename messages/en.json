@@ -1,0 +1,238 @@
+{
+  "Common": {
+    "appName": "SIVARFEST",
+    "loading": "Loading...",
+    "notAvailable": "Not available"
+  },
+  "Navigation": {
+    "athletes": "Athletes",
+    "events": "Events",
+    "leaderboard": "Leaderboard",
+    "heats": "Heats",
+    "admin": "Admin",
+    "publicSite": "Public site",
+    "language": {
+      "label": "Language",
+      "english": "English",
+      "spanish": "Spanish",
+      "switchTo": "Switch to {language}"
+    }
+  },
+  "Auth": {
+    "email": "Email",
+    "password": "Password",
+    "passwordPlaceholder": "Your password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "invalidCredentials": "Invalid email or password.",
+    "signOut": "Sign out",
+    "signingOut": "Signing out...",
+    "portalAccess": "Portal access",
+    "description": "Admins manage the competition, and judges can review their event-day assignments."
+  },
+  "Competitions": {
+  "publicHome": {
+    "eyebrow": "Functional Fitness Competition",
+    "fallbackDescription": "Official competition portal for athletes, heats, workouts, and results.",
+    "viewAthletes": "View Athletes",
+    "viewEvents": "View Events",
+    "date": "Date",
+    "location": "Location",
+    "categories": "Categories",
+    "athletes": "Athletes",
+    "tba": "TBA",
+    "officialEvents": "Official Events",
+    "event": "Event {eventCode}",
+    "emptyEventsTitle": "No events available",
+    "emptyEventsDescription": "Official competition events will appear here once they are published."
+  }
+},
+  "Athletes": {
+  "publicList": {
+    "eyebrow": "Competitors",
+    "title": "Athletes",
+    "countryTba": "Country TBA",
+    "independentAthlete": "Independent athlete",
+    "emptyTitle": "No athletes available",
+    "emptyDescription": "Registered competitors will appear here once they are publicly available."
+  }
+},
+  "Categories": {},
+  "Events": {
+    "scoreType": {
+      "FOR_TIME": "For Time",
+      "AMRAP_REPS": "AMRAP Reps",
+      "MAX_WEIGHT": "Max Weight",
+      "EMOM_REPS": "EMOM Reps",
+      "ROUNDS_COMPLETED": "Rounds Completed",
+      "POINTS": "Points",
+      "CUSTOM": "Custom"
+    },
+    "rankingDirection": {
+      "LOWER_IS_BETTER": "Lower Is Better",
+      "HIGHER_IS_BETTER": "Higher Is Better"
+    },
+    "publicList": {
+      "eyebrow": "Workouts",
+      "title": "Events",
+      "event": "Event {eventCode}",
+      "timeCap": "Time cap: {duration}",
+      "seconds": "{seconds, plural, one {# second} other {# seconds}}",
+      "minutes": "{minutes, plural, one {# minute} other {# minutes}}",
+      "minutesAndSeconds": "{minutes, plural, one {# minute} other {# minutes}} {seconds, plural, one {# second} other {# seconds}}",
+      "workout": "Workout",
+      "standards": "Standards",
+      "viewResults": "View results →",
+      "resultsNotReleased": "Results not released",
+      "emptyTitle": "No events available",
+      "emptyDescription": "Competition events will appear here once they are released."
+    }
+  },
+  "Heats": {
+  "status": {
+    "SCHEDULED": "Scheduled",
+    "CHECK_IN_OPEN": "Check-in open",
+    "ON_FLOOR": "On floor",
+    "IN_PROGRESS": "In progress",
+    "COMPLETED": "Completed",
+    "DELAYED": "Delayed",
+    "CANCELLED": "Cancelled"
+  },
+  "publicSchedule": {
+    "eyebrow": "Competition day",
+    "title": "Heat schedule",
+    "description": "Find your event, heat time, and assigned lane or station.",
+    "event": "Event {eventCode}",
+    "heatCount": "{count, plural, one {# heat} other {# heats}}",
+    "timeTba": "Time TBA",
+    "laneStation": "Lane / station {position, number}",
+    "assignmentsPending": "Athlete assignments pending.",
+    "emptyTitle": "Heat schedule not available",
+    "emptyDescription": "The public heat schedule has not been published yet."
+  }
+},
+  "Leaderboard": {
+    "status": {
+      "UNOFFICIAL": "Unofficial",
+      "UNDER_REVIEW": "Under review",
+      "PUBLISHED": "Published",
+      "FINAL": "Final"
+    },
+    "gender": {
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "MIXED": "Mixed",
+      "OPEN": "Open",
+      "OTHER": "Other"
+    },
+    "overall": {
+      "eyebrow": "Competition standings",
+      "title": "{competitionName} Leaderboard",
+      "description": "Lowest total points wins. Athletes with more scored events rank ahead of athletes with fewer completed results.",
+      "updated": "Updated {date}",
+      "notYetUpdated": "Not yet updated",
+      "eventCount": "{count, plural, one {# event} other {# events}}",
+      "rankedCount": "{count, plural, one {# athlete ranked} other {# athletes ranked}}",
+      "emptyTitle": "No standings available yet",
+      "emptyDescription": "Overall standings will appear after event results are released.",
+      "rank": "Rank",
+      "athlete": "Athlete",
+      "event": "Event {eventCode}",
+      "total": "Total",
+      "noScore": "No score",
+      "unscored": "Unscored",
+      "tiedAbbreviation": "T",
+      "placementPoints": "{rank, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} place · {points, plural, one {# pt} other {# pts}}",
+      "scoredEvents": "{scored, number}/{total, number} scored",
+      "noAthletes": "No athletes are available in this division.",
+      "noDivisions": "No leaderboard divisions are available."
+    },
+    "event": {
+      "backToEvents": "← Back to events",
+      "eyebrow": "Event {eventCode}",
+      "updated": "Updated {date}",
+      "notYetUpdated": "Not yet updated",
+      "rankedCount": "{count, plural, one {# athlete ranked} other {# athletes ranked}}",
+      "rank": "Rank",
+      "athlete": "Athlete",
+      "score": "Score",
+      "tiebreak": "Tiebreak",
+      "points": "Points",
+      "noScore": "No score",
+      "tiedAbbreviation": "T",
+      "noAthletes": "No athletes are available in this division.",
+      "noDivisions": "No leaderboard divisions are available yet."
+    }
+  },
+  "Scoring": {
+    "status": {
+      "DRAFT": "Draft",
+      "SUBMITTED": "Submitted",
+      "VALIDATED": "Validated",
+      "REJECTED": "Rejected",
+      "PUBLISHED": "Published",
+      "LOCKED": "Locked"
+    }
+  },
+  "Judging": {
+  "layout": {
+    "role": "Judge"
+  },
+  "dashboard": {
+    "eyebrow": "Judge dashboard",
+    "title": "My assignments",
+    "description": "Your assigned athlete positions for the competition.",
+    "event": "Event {eventCode}",
+    "position": "Position {position, number}",
+    "timeNotScheduled": "Time not scheduled",
+    "empty": "You do not have any assignments yet."
+  },
+  "scoreEntry": {
+  "noScore": "No score submitted",
+  "existingScore": "Existing score",
+  "enterScore": "Enter score",
+  "editScore": "Edit score",
+  "readOnly": "This score can no longer be edited by a judge.",
+  "status": "Status: {status}",
+  "result": "Result",
+  "finished": "Finished",
+  "cappedDnf": "Capped / DNF",
+  "completionTime": "Completion time",
+  "timeCap": "Time cap: {cap}",
+  "completedReps": "Completed reps",
+  "totalReps": "Total reps",
+  "completedRounds": "Completed rounds",
+  "weight": "Weight",
+  "points": "Points",
+  "customValue": "Custom value",
+  "tiebreak": "Tiebreak",
+  "tiebreakTime": "Tiebreak time",
+  "tiebreakReps": "Tiebreak reps",
+  "tiebreakWeight": "Tiebreak weight",
+  "tiebreakPoints": "Tiebreak points",
+  "tiebreakValue": "Tiebreak value",
+  "notes": "Notes",
+  "saving": "Submitting...",
+  "submitScore": "Submit score",
+  "saveChanges": "Submit changes",
+  "submitted": "Score submitted successfully.",
+  "saveError": "The score could not be submitted. Please try again.",
+  "repsDisplay": "{count, plural, one {# rep} other {# reps}}",
+  "roundsDisplay": "{count, plural, one {# round} other {# rounds}}",
+  "pointsDisplay": "{count, plural, one {# point} other {# points}}",
+  "validation": {
+    "chooseFinished": "Choose whether the athlete finished.",
+    "cappedNotAllowed": "This event does not allow capped results.",
+    "required": "{field} is required.",
+    "wholeNumber": "{field} must be a non-negative whole number.",
+    "number": "{field} must be a non-negative number.",
+    "timeFormat": "{field} must use seconds, MM:SS, or HH:MM:SS.",
+    "secondsRange": "{field} seconds must be between 00 and 59.",
+    "minutesRange": "{field} minutes must be between 00 and 59 when hours are provided.",
+    "exceedsTimeCap": "{field} cannot exceed the event time cap ({cap})."
+  }
+}
+},
+  "Validation": {},
+  "Errors": {}
+}

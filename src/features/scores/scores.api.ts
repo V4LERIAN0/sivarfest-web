@@ -1,5 +1,6 @@
 import {
   serverApiGet,
+  serverApiGetOrNull,
   serverApiPost,
   serverApiPut,
 } from "@/lib/server-api-client";
@@ -31,6 +32,24 @@ export function upsertAdminScore(
 ) {
   return serverApiPut<ScoreResponse, ScoreEntryRequest>(
     `/admin/events/${eventId}/athletes/${athleteId}/score`,
+    request
+  );
+}
+
+export function getJudgeAssignmentScore(
+  assignmentId: number
+) {
+  return serverApiGetOrNull<ScoreResponse>(
+    `/judge/assignments/${assignmentId}/score`
+  );
+}
+
+export function upsertJudgeAssignmentScore(
+  assignmentId: number,
+  request: ScoreEntryRequest
+) {
+  return serverApiPut<ScoreResponse, ScoreEntryRequest>(
+    `/judge/assignments/${assignmentId}/score`,
     request
   );
 }

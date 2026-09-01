@@ -49,6 +49,26 @@ export async function serverApiGet<T>(path: string): Promise<T> {
   return handleResponse<T>(response, path);
 }
 
+export async function serverApiGetOrNull<T>(
+  path: string
+): Promise<T | null> {
+  const cookieHeader = await getCookieHeader();
+
+  const response = await fetch(`${API_URL}${path}`, {
+    method: "GET",
+    headers: {
+      Cookie: cookieHeader,
+    },
+    cache: "no-store",
+  });
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  return handleResponse<T>(response, path);
+}
+
 export async function serverApiPost<TResponse, TBody>(
   path: string,
   body: TBody

@@ -1,0 +1,238 @@
+{
+  "Common": {
+    "appName": "SIVARFEST",
+    "loading": "Cargando...",
+    "notAvailable": "No disponible"
+  },
+  "Navigation": {
+    "athletes": "Atletas",
+    "events": "Eventos",
+    "leaderboard": "Tabla de posiciones",
+    "heats": "Heats",
+    "admin": "Administración",
+    "publicSite": "Sitio público",
+    "language": {
+      "label": "Idioma",
+      "english": "Inglés",
+      "spanish": "Español",
+      "switchTo": "Cambiar a {language}"
+    }
+  },
+  "Auth": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Tu contraseña",
+    "signIn": "Iniciar sesión",
+    "signingIn": "Iniciando sesión...",
+    "invalidCredentials": "Correo electrónico o contraseña incorrectos.",
+    "signOut": "Cerrar sesión",
+    "signingOut": "Cerrando sesión...",
+    "portalAccess": "Acceso al portal",
+    "description": "Los administradores gestionan la competencia y los jueces pueden consultar sus asignaciones del día del evento."
+  },
+  "Competitions": {
+  "publicHome": {
+    "eyebrow": "Competencia de fitness funcional",
+    "fallbackDescription": "Portal oficial de la competencia para atletas, series, entrenamientos y resultados.",
+    "viewAthletes": "Ver atletas",
+    "viewEvents": "Ver eventos",
+    "date": "Fecha",
+    "location": "Ubicación",
+    "categories": "Categorías",
+    "athletes": "Atletas",
+    "tba": "Por confirmar",
+    "officialEvents": "Eventos oficiales",
+    "event": "Evento {eventCode}",
+    "emptyEventsTitle": "No hay eventos disponibles",
+    "emptyEventsDescription": "Los eventos oficiales de la competencia aparecerán aquí cuando sean publicados."
+  }
+},
+  "Athletes": {
+  "publicList": {
+    "eyebrow": "Competidores",
+    "title": "Atletas",
+    "countryTba": "País por confirmar",
+    "independentAthlete": "Atleta independiente",
+    "emptyTitle": "No hay atletas disponibles",
+    "emptyDescription": "Los competidores inscritos aparecerán aquí cuando estén disponibles públicamente."
+  }
+},
+  "Categories": {},
+  "Events": {
+    "scoreType": {
+      "FOR_TIME": "Por tiempo",
+      "AMRAP_REPS": "Repeticiones AMRAP",
+      "MAX_WEIGHT": "Peso máximo",
+      "EMOM_REPS": "Repeticiones EMOM",
+      "ROUNDS_COMPLETED": "Rondas completadas",
+      "POINTS": "Puntos",
+      "CUSTOM": "Personalizado"
+    },
+    "rankingDirection": {
+      "LOWER_IS_BETTER": "Menor resultado gana",
+      "HIGHER_IS_BETTER": "Mayor resultado gana"
+    },
+    "publicList": {
+      "eyebrow": "Workouts",
+      "title": "Eventos",
+      "event": "Evento {eventCode}",
+      "timeCap": "Límite de tiempo: {duration}",
+      "seconds": "{seconds, plural, one {# segundo} other {# segundos}}",
+      "minutes": "{minutes, plural, one {# minuto} other {# minutos}}",
+      "minutesAndSeconds": "{minutes, plural, one {# minuto} other {# minutos}} {seconds, plural, one {# segundo} other {# segundos}}",
+      "workout": "Descripción",
+      "standards": "Estándares",
+      "viewResults": "Ver resultados →",
+      "resultsNotReleased": "Resultados aún no publicados",
+      "emptyTitle": "No hay eventos disponibles",
+      "emptyDescription": "Los eventos de la competencia aparecerán aquí cuando sean publicados."
+    }
+  },
+  "Heats": {
+  "status": {
+    "SCHEDULED": "Programada",
+    "CHECK_IN_OPEN": "Check-in abierto",
+    "ON_FLOOR": "En área de competencia",
+    "IN_PROGRESS": "En curso",
+    "COMPLETED": "Finalizada",
+    "DELAYED": "Retrasada",
+    "CANCELLED": "Cancelada"
+  },
+  "publicSchedule": {
+    "eyebrow": "Día de competencia",
+    "title": "Horario de heats",
+    "description": "Encuentra tu evento, horario de heat y carril o estación asignada.",
+    "event": "Evento {eventCode}",
+    "heatCount": "{count, plural, one {# heat} other {# heats}}",
+    "timeTba": "Horario por confirmar",
+    "laneStation": "Carril / estación {position, number}",
+    "assignmentsPending": "Asignaciones de atletas pendientes.",
+    "emptyTitle": "Horario de heats no disponible",
+    "emptyDescription": "El horario público de heats aún no ha sido publicado."
+  }
+},
+  "Leaderboard": {
+    "status": {
+      "UNOFFICIAL": "No oficial",
+      "UNDER_REVIEW": "En revisión",
+      "PUBLISHED": "Publicada",
+      "FINAL": "Final"
+    },
+    "gender": {
+      "MALE": "Masculino",
+      "FEMALE": "Femenino",
+      "MIXED": "Mixto",
+      "OPEN": "Abierto",
+      "OTHER": "Otro"
+    },
+    "overall": {
+      "eyebrow": "Clasificación general",
+      "title": "Tabla de posiciones de {competitionName}",
+      "description": "Gana quien tenga el menor total de puntos. Los atletas con más eventos puntuados se clasifican por encima de quienes tienen menos resultados completados.",
+      "updated": "Actualizado {date}",
+      "notYetUpdated": "Aún no se ha actualizado",
+      "eventCount": "{count, plural, one {# evento} other {# eventos}}",
+      "rankedCount": "{count, plural, one {# atleta clasificado} other {# atletas clasificados}}",
+      "emptyTitle": "Aún no hay posiciones disponibles",
+      "emptyDescription": "La clasificación general aparecerá cuando se publiquen los resultados de los eventos.",
+      "rank": "Posición",
+      "athlete": "Atleta",
+      "event": "Evento {eventCode}",
+      "total": "Total",
+      "noScore": "Sin puntaje",
+      "unscored": "Sin puntuar",
+      "tiedAbbreviation": "E",
+      "placementPoints": "{rank, number}.º lugar · {points, plural, one {# pto.} other {# ptos.}}",
+      "scoredEvents": "{scored, number}/{total, number} con puntaje",
+      "noAthletes": "No hay atletas disponibles en esta división.",
+      "noDivisions": "No hay divisiones disponibles en la tabla de posiciones."
+    },
+    "event": {
+      "backToEvents": "← Volver a eventos",
+      "eyebrow": "Evento {eventCode}",
+      "updated": "Actualizado {date}",
+      "notYetUpdated": "Aún no se ha actualizado",
+      "rankedCount": "{count, plural, one {# atleta clasificado} other {# atletas clasificados}}",
+      "rank": "Posición",
+      "athlete": "Atleta",
+      "score": "Puntaje",
+      "tiebreak": "Desempate",
+      "points": "Puntos",
+      "noScore": "Sin puntaje",
+      "tiedAbbreviation": "E",
+      "noAthletes": "No hay atletas disponibles en esta división.",
+      "noDivisions": "Aún no hay divisiones disponibles en la tabla de posiciones."
+    }
+  },
+  "Scoring": {
+    "status": {
+      "DRAFT": "Borrador",
+      "SUBMITTED": "Enviado",
+      "VALIDATED": "Validado",
+      "REJECTED": "Rechazado",
+      "PUBLISHED": "Publicado",
+      "LOCKED": "Bloqueado"
+    }
+  },
+  "Judging": {
+  "layout": {
+    "role": "Juez"
+  },
+  "dashboard": {
+    "eyebrow": "Panel de jueces",
+    "title": "Mis asignaciones",
+    "description": "Estas son las posiciones de atletas que tienes asignadas para la competencia.",
+    "event": "Evento {eventCode}",
+    "position": "Posición {position, number}",
+    "timeNotScheduled": "Horario no programado",
+    "empty": "Aún no tienes asignaciones."
+  },
+  "scoreEntry": {
+  "noScore": "Sin puntaje enviado",
+  "existingScore": "Puntaje existente",
+  "enterScore": "Ingresar puntaje",
+  "editScore": "Editar puntaje",
+  "readOnly": "Este puntaje ya no puede ser editado por un juez.",
+  "status": "Estado: {status}",
+  "result": "Resultado",
+  "finished": "Finalizó",
+  "cappedDnf": "Límite de tiempo / No finalizó",
+  "completionTime": "Tiempo de finalización",
+  "timeCap": "Límite de tiempo: {cap}",
+  "completedReps": "Repeticiones completadas",
+  "totalReps": "Repeticiones totales",
+  "completedRounds": "Rondas completadas",
+  "weight": "Peso",
+  "points": "Puntos",
+  "customValue": "Valor personalizado",
+  "tiebreak": "Desempate",
+  "tiebreakTime": "Tiempo de desempate",
+  "tiebreakReps": "Repeticiones de desempate",
+  "tiebreakWeight": "Peso de desempate",
+  "tiebreakPoints": "Puntos de desempate",
+  "tiebreakValue": "Valor de desempate",
+  "notes": "Notas",
+  "saving": "Enviando...",
+  "submitScore": "Enviar puntaje",
+  "saveChanges": "Enviar cambios",
+  "submitted": "Puntaje enviado correctamente.",
+  "saveError": "No se pudo enviar el puntaje. Inténtalo de nuevo.",
+  "repsDisplay": "{count, plural, one {# repetición} other {# repeticiones}}",
+  "roundsDisplay": "{count, plural, one {# ronda} other {# rondas}}",
+  "pointsDisplay": "{count, plural, one {# punto} other {# puntos}}",
+  "validation": {
+    "chooseFinished": "Selecciona si el atleta finalizó.",
+    "cappedNotAllowed": "Este evento no permite resultados limitados por tiempo.",
+    "required": "El campo «{field}» es obligatorio.",
+    "wholeNumber": "El campo «{field}» debe ser un número entero no negativo.",
+    "number": "El campo «{field}» debe ser un número no negativo.",
+    "timeFormat": "El campo «{field}» debe usar segundos, MM:SS o HH:MM:SS.",
+    "secondsRange": "Los segundos de «{field}» deben estar entre 00 y 59.",
+    "minutesRange": "Los minutos de «{field}» deben estar entre 00 y 59 cuando se incluyen horas.",
+    "exceedsTimeCap": "El campo «{field}» no puede superar el límite de tiempo del evento ({cap})."
+  }
+}
+},
+  "Validation": {},
+  "Errors": {}
+}
