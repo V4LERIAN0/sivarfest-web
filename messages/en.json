@@ -26,7 +26,9 @@
     "signingIn": "Signing in...",
     "invalidCredentials": "Invalid email or password.",
     "signOut": "Sign out",
-    "signingOut": "Signing out..."
+    "signingOut": "Signing out...",
+    "portalAccess": "Portal access",
+    "description": "Admins manage the competition, and judges can review their event-day assignments."
   },
   "Competitions": {
   "publicHome": {

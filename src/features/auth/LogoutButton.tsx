@@ -7,11 +7,13 @@ import { useState } from "react";
 type LogoutButtonProps = {
   label?: string;
   loadingLabel?: string;
+  redirectTo?: string;
 };
 
 export function LogoutButton({
   label = "Logout",
   loadingLabel = "Signing out...",
+  redirectTo = "/login",
 }: LogoutButtonProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +23,7 @@ export function LogoutButton({
 
     try {
       await logout();
-      router.push("/login");
+      router.push(redirectTo);
       router.refresh();
     } finally {
       setIsLoading(false);

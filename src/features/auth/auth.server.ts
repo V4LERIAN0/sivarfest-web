@@ -45,10 +45,12 @@ export async function requireAdminServer() {
   return user;
 }
 
-export async function requireJudgeServer() {
+export async function requireJudgeServer(loginPath = "/login") {
   const user = await getCurrentUserServer();
+
   if (!user || user.role !== "JUDGE") {
-    redirect("/login");
+    redirect(loginPath);
   }
+
   return user;
 }

@@ -5,12 +5,20 @@ import { requireJudgeServer } from "@/features/auth/auth.server";
 import { LogoutButton } from "@/features/auth/LogoutButton";
 import { Link } from "@/i18n/navigation";
 
+type JudgeLayoutProps = Readonly<{
+  children: React.ReactNode;
+  params: Promise<{
+    locale: string;
+  }>;
+}>;
+
 export default async function JudgeLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  await requireJudgeServer();
+  params,
+}: JudgeLayoutProps) {
+  const { locale } = await params;
+
+  await requireJudgeServer(`/${locale}/login`);
 
   const [commonT, judgingT, authT] = await Promise.all([
     getTranslations("Common"),
@@ -32,6 +40,7 @@ export default async function JudgeLayout({
             <LogoutButton
               label={authT("signOut")}
               loadingLabel={authT("signingOut")}
+              redirectTo={`/${locale}/login`}
             />
           </div>
         </div>

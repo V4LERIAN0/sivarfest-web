@@ -26,7 +26,9 @@
     "signingIn": "Iniciando sesión...",
     "invalidCredentials": "Correo electrónico o contraseña incorrectos.",
     "signOut": "Cerrar sesión",
-    "signingOut": "Cerrando sesión..."
+    "signingOut": "Cerrando sesión...",
+    "portalAccess": "Acceso al portal",
+    "description": "Los administradores gestionan la competencia y los jueces pueden consultar sus asignaciones del día del evento."
   },
   "Competitions": {
   "publicHome": {
