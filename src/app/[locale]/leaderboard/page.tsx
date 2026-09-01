@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
 import { getPublicOverallLeaderboard } from "@/features/leaderboards/leaderboards.api";

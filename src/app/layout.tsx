@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { routing } from "@/i18n/routing";
+import { getLocale } from "next-intl/server";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,8 +14,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang={routing.defaultLocale}>
+    <html lang={locale}>
       <body>
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>

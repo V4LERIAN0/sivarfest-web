@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
@@ -7,6 +7,7 @@ import type { LeaderboardStatus } from "@/features/leaderboards/leaderboards.typ
 
 type PublicEventLeaderboardPageProps = {
   params: Promise<{
+    locale: string;
     eventId: string;
   }>;
 };
@@ -55,7 +56,7 @@ export default async function PublicEventLeaderboardPage({
   const leaderboard = await getPublicEventLeaderboard(numericEventId);
   if (!leaderboard) {
   notFound();
-}
+  }
 
   const rankedAthletes = leaderboard.categories.reduce(
     (total, category) =>

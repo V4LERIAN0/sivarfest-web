@@ -3,7 +3,7 @@ import { getPublicAthletes } from "@/features/athletes/athletes.api";
 import { getPublicCategories } from "@/features/categories/categories.api";
 import { getPublicCompetition } from "@/features/competitions/competitions.api";
 import { getPublicEvents } from "@/features/events/events.api";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {

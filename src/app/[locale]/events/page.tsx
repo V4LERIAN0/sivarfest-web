@@ -1,6 +1,6 @@
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
 import { getPublicEvents } from "@/features/events/events.api";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 export const dynamic = "force-dynamic";
 
 function formatScoreType(scoreType: string) {
