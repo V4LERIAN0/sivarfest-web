@@ -24,7 +24,9 @@
     "passwordPlaceholder": "Your password",
     "signIn": "Sign in",
     "signingIn": "Signing in...",
-    "invalidCredentials": "Invalid email or password."
+    "invalidCredentials": "Invalid email or password.",
+    "signOut": "Sign out",
+    "signingOut": "Signing out..."
   },
   "Competitions": {
   "publicHome": {
@@ -170,7 +172,20 @@
       "LOCKED": "Locked"
     }
   },
-  "Judging": {},
+  "Judging": {
+  "layout": {
+    "role": "Judge"
+  },
+  "dashboard": {
+    "eyebrow": "Judge dashboard",
+    "title": "My assignments",
+    "description": "Your assigned athlete positions for the competition.",
+    "event": "Event {eventCode}",
+    "position": "Position {position, number}",
+    "timeNotScheduled": "Time not scheduled",
+    "empty": "You do not have any assignments yet."
+  }
+},
   "Validation": {},
   "Errors": {}
 }

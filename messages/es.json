@@ -24,7 +24,9 @@
     "passwordPlaceholder": "Tu contraseña",
     "signIn": "Iniciar sesión",
     "signingIn": "Iniciando sesión...",
-    "invalidCredentials": "Correo electrónico o contraseña incorrectos."
+    "invalidCredentials": "Correo electrónico o contraseña incorrectos.",
+    "signOut": "Cerrar sesión",
+    "signingOut": "Cerrando sesión..."
   },
   "Competitions": {
   "publicHome": {
@@ -170,7 +172,20 @@
       "LOCKED": "Bloqueado"
     }
   },
-  "Judging": {},
+  "Judging": {
+  "layout": {
+    "role": "Juez"
+  },
+  "dashboard": {
+    "eyebrow": "Panel de jueces",
+    "title": "Mis asignaciones",
+    "description": "Estas son las posiciones de atletas que tienes asignadas para la competencia.",
+    "event": "Evento {eventCode}",
+    "position": "Posición {position, number}",
+    "timeNotScheduled": "Horario no programado",
+    "empty": "Aún no tienes asignaciones."
+  }
+},
   "Validation": {},
   "Errors": {}
 }
