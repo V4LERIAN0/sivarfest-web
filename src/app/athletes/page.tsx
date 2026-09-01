@@ -1,5 +1,6 @@
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
 import { getPublicAthletes } from "@/features/athletes/athletes.api";
+export const dynamic = "force-dynamic";
 
 export default async function AthletesPage() {
   const athletes = await getPublicAthletes();

@@ -1,6 +1,7 @@
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
 import { getPublicEvents } from "@/features/events/events.api";
 import Link from "next/link";
+export const dynamic = "force-dynamic";
 
 function formatScoreType(scoreType: string) {
   return scoreType.replaceAll("_", " ");
@@ -80,19 +81,19 @@ export default async function EventsPage() {
               )}
 
               <div className="mt-6 border-t border-slate-800 pt-4">
-  {event.scoreVisible ? (
-    <Link
-      href={`/leaderboard/events/${event.id}`}
-      className="inline-flex items-center font-semibold text-orange-400 transition hover:text-orange-300"
-    >
-      View results →
-    </Link>
-  ) : (
-    <span className="text-sm font-medium text-slate-500">
-      Results not released
-    </span>
-  )}
-</div>
+                {event.scoreVisible && event.status !== "DRAFT" ? (
+                  <Link
+                    href={`/leaderboard/events/${event.id}`}
+                    className="inline-flex items-center font-semibold text-orange-400 transition hover:text-orange-300"
+                  >
+                    View results →
+                  </Link>
+                ) : (
+                  <span className="text-sm font-medium text-slate-500">
+                    Results not released
+                  </span>
+                )}
+              </div>
             </article>
           ))}
         </div>

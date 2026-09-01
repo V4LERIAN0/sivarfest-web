@@ -53,6 +53,9 @@ export default async function PublicEventLeaderboardPage({
   }
 
   const leaderboard = await getPublicEventLeaderboard(numericEventId);
+  if (!leaderboard) {
+  notFound();
+}
 
   const rankedAthletes = leaderboard.categories.reduce(
     (total, category) =>

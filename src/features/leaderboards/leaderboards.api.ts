@@ -4,6 +4,7 @@ import type {
   EventLeaderboardResponse,
   OverallLeaderboardResponse,
 } from "./leaderboards.types";
+import axios from "axios";
 
 const COMPETITION_SLUG =
   process.env.NEXT_PUBLIC_COMPETITION_SLUG ?? "sivarfest-2026";
@@ -34,9 +35,20 @@ export async function getPublicOverallLeaderboard() {
 }
 
 export async function getPublicEventLeaderboard(eventId: number) {
-  const response = await apiClient.get<EventLeaderboardResponse>(
-    `/public/competitions/${COMPETITION_SLUG}/leaderboard/events/${eventId}`
-  );
+  try {
+    const response = await apiClient.get<EventLeaderboardResponse>(
+      `/public/competitions/${COMPETITION_SLUG}/leaderboard/events/${eventId}`
+    );
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    if (
+      axios.isAxiosError(error) &&
+      error.response?.status === 404
+    ) {
+      return null;
+    }
+
+    throw error;
+  }
 }
