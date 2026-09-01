@@ -10,7 +10,13 @@
     "leaderboard": "Tabla de posiciones",
     "heats": "Series",
     "admin": "Administración",
-    "publicSite": "Sitio público"
+    "publicSite": "Sitio público",
+    "language": {
+      "label": "Idioma",
+      "english": "Inglés",
+      "spanish": "Español",
+      "switchTo": "Cambiar a {language}"
+    }
   },
   "Auth": {
     "email": "Correo electrónico",

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
+import { DocumentLanguage } from "@/components/i18n/DocumentLanguage";
 
 import "./globals.css";
 
@@ -19,7 +20,10 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <DocumentLanguage />
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );

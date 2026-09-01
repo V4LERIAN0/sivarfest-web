@@ -4,7 +4,7 @@ import { LoginForm } from "@/features/auth/LoginForm";
 export default function LoginPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <PublicNavbar />
+      <PublicNavbar showLocaleSwitcher={false} />
 
       <section className="mx-auto flex min-h-[calc(100vh-80px)] max-w-6xl items-center justify-center px-4 py-12">
         <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/70 p-8 shadow-2xl">

@@ -10,7 +10,13 @@
     "leaderboard": "Leaderboard",
     "heats": "Heats",
     "admin": "Admin",
-    "publicSite": "Public site"
+    "publicSite": "Public site",
+    "language": {
+      "label": "Language",
+      "english": "English",
+      "spanish": "Spanish",
+      "switchTo": "Switch to {language}"
+    }
   },
   "Auth": {
     "email": "Email",
