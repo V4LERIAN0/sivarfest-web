@@ -1,0 +1,33 @@
+{
+  "Common": {
+    "appName": "SIVARFEST",
+    "loading": "Cargando...",
+    "notAvailable": "No disponible"
+  },
+  "Navigation": {
+    "athletes": "Atletas",
+    "events": "Eventos",
+    "leaderboard": "Tabla de posiciones",
+    "heats": "Series",
+    "admin": "Administración",
+    "publicSite": "Sitio público"
+  },
+  "Auth": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Tu contraseña",
+    "signIn": "Iniciar sesión",
+    "signingIn": "Iniciando sesión...",
+    "invalidCredentials": "Correo electrónico o contraseña incorrectos."
+  },
+  "Competitions": {},
+  "Athletes": {},
+  "Categories": {},
+  "Events": {},
+  "Heats": {},
+  "Leaderboard": {},
+  "Scoring": {},
+  "Judging": {},
+  "Validation": {},
+  "Errors": {}
+}
