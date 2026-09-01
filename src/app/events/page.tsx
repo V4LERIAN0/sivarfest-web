@@ -1,5 +1,6 @@
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
 import { getPublicEvents } from "@/features/events/events.api";
+import Link from "next/link";
 
 function formatScoreType(scoreType: string) {
   return scoreType.replaceAll("_", " ");
@@ -77,6 +78,21 @@ export default async function EventsPage() {
                   </p>
                 </div>
               )}
+
+              <div className="mt-6 border-t border-slate-800 pt-4">
+  {event.scoreVisible ? (
+    <Link
+      href={`/leaderboard/events/${event.id}`}
+      className="inline-flex items-center font-semibold text-orange-400 transition hover:text-orange-300"
+    >
+      View results →
+    </Link>
+  ) : (
+    <span className="text-sm font-medium text-slate-500">
+      Results not released
+    </span>
+  )}
+</div>
             </article>
           ))}
         </div>
