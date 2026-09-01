@@ -8,7 +8,7 @@
     "athletes": "Atletas",
     "events": "Eventos",
     "leaderboard": "Tabla de posiciones",
-    "heats": "Series",
+    "heats": "Heats",
     "admin": "Administración",
     "publicSite": "Sitio público",
     "language": {
@@ -26,13 +26,150 @@
     "signingIn": "Iniciando sesión...",
     "invalidCredentials": "Correo electrónico o contraseña incorrectos."
   },
-  "Competitions": {},
-  "Athletes": {},
+  "Competitions": {
+  "publicHome": {
+    "eyebrow": "Competencia de fitness funcional",
+    "fallbackDescription": "Portal oficial de la competencia para atletas, series, entrenamientos y resultados.",
+    "viewAthletes": "Ver atletas",
+    "viewEvents": "Ver eventos",
+    "date": "Fecha",
+    "location": "Ubicación",
+    "categories": "Categorías",
+    "athletes": "Atletas",
+    "tba": "Por confirmar",
+    "officialEvents": "Eventos oficiales",
+    "event": "Evento {eventCode}",
+    "emptyEventsTitle": "No hay eventos disponibles",
+    "emptyEventsDescription": "Los eventos oficiales de la competencia aparecerán aquí cuando sean publicados."
+  }
+},
+  "Athletes": {
+  "publicList": {
+    "eyebrow": "Competidores",
+    "title": "Atletas",
+    "countryTba": "País por confirmar",
+    "independentAthlete": "Atleta independiente",
+    "emptyTitle": "No hay atletas disponibles",
+    "emptyDescription": "Los competidores inscritos aparecerán aquí cuando estén disponibles públicamente."
+  }
+},
   "Categories": {},
-  "Events": {},
-  "Heats": {},
-  "Leaderboard": {},
-  "Scoring": {},
+  "Events": {
+    "scoreType": {
+      "FOR_TIME": "Por tiempo",
+      "AMRAP_REPS": "Repeticiones AMRAP",
+      "MAX_WEIGHT": "Peso máximo",
+      "EMOM_REPS": "Repeticiones EMOM",
+      "ROUNDS_COMPLETED": "Rondas completadas",
+      "POINTS": "Puntos",
+      "CUSTOM": "Personalizado"
+    },
+    "rankingDirection": {
+      "LOWER_IS_BETTER": "Menor resultado gana",
+      "HIGHER_IS_BETTER": "Mayor resultado gana"
+    },
+    "publicList": {
+      "eyebrow": "Workouts",
+      "title": "Eventos",
+      "event": "Evento {eventCode}",
+      "timeCap": "Límite de tiempo: {duration}",
+      "seconds": "{seconds, plural, one {# segundo} other {# segundos}}",
+      "minutes": "{minutes, plural, one {# minuto} other {# minutos}}",
+      "minutesAndSeconds": "{minutes, plural, one {# minuto} other {# minutos}} {seconds, plural, one {# segundo} other {# segundos}}",
+      "workout": "Descripción",
+      "standards": "Estándares",
+      "viewResults": "Ver resultados →",
+      "resultsNotReleased": "Resultados aún no publicados",
+      "emptyTitle": "No hay eventos disponibles",
+      "emptyDescription": "Los eventos de la competencia aparecerán aquí cuando sean publicados."
+    }
+  },
+  "Heats": {
+  "status": {
+    "SCHEDULED": "Programada",
+    "CHECK_IN_OPEN": "Check-in abierto",
+    "ON_FLOOR": "En área de competencia",
+    "IN_PROGRESS": "En curso",
+    "COMPLETED": "Finalizada",
+    "DELAYED": "Retrasada",
+    "CANCELLED": "Cancelada"
+  },
+  "publicSchedule": {
+    "eyebrow": "Día de competencia",
+    "title": "Horario de heats",
+    "description": "Encuentra tu evento, horario de heat y carril o estación asignada.",
+    "event": "Evento {eventCode}",
+    "heatCount": "{count, plural, one {# heat} other {# heats}}",
+    "timeTba": "Horario por confirmar",
+    "laneStation": "Carril / estación {position, number}",
+    "assignmentsPending": "Asignaciones de atletas pendientes.",
+    "emptyTitle": "Horario de heats no disponible",
+    "emptyDescription": "El horario público de heats aún no ha sido publicado."
+  }
+},
+  "Leaderboard": {
+    "status": {
+      "UNOFFICIAL": "No oficial",
+      "UNDER_REVIEW": "En revisión",
+      "PUBLISHED": "Publicada",
+      "FINAL": "Final"
+    },
+    "gender": {
+      "MALE": "Masculino",
+      "FEMALE": "Femenino",
+      "MIXED": "Mixto",
+      "OPEN": "Abierto",
+      "OTHER": "Otro"
+    },
+    "overall": {
+      "eyebrow": "Clasificación general",
+      "title": "Tabla de posiciones de {competitionName}",
+      "description": "Gana quien tenga el menor total de puntos. Los atletas con más eventos puntuados se clasifican por encima de quienes tienen menos resultados completados.",
+      "updated": "Actualizado {date}",
+      "notYetUpdated": "Aún no se ha actualizado",
+      "eventCount": "{count, plural, one {# evento} other {# eventos}}",
+      "rankedCount": "{count, plural, one {# atleta clasificado} other {# atletas clasificados}}",
+      "emptyTitle": "Aún no hay posiciones disponibles",
+      "emptyDescription": "La clasificación general aparecerá cuando se publiquen los resultados de los eventos.",
+      "rank": "Posición",
+      "athlete": "Atleta",
+      "event": "Evento {eventCode}",
+      "total": "Total",
+      "noScore": "Sin puntaje",
+      "unscored": "Sin puntuar",
+      "tiedAbbreviation": "E",
+      "placementPoints": "{rank, number}.º lugar · {points, plural, one {# pto.} other {# ptos.}}",
+      "scoredEvents": "{scored, number}/{total, number} con puntaje",
+      "noAthletes": "No hay atletas disponibles en esta división.",
+      "noDivisions": "No hay divisiones disponibles en la tabla de posiciones."
+    },
+    "event": {
+      "backToEvents": "← Volver a eventos",
+      "eyebrow": "Evento {eventCode}",
+      "updated": "Actualizado {date}",
+      "notYetUpdated": "Aún no se ha actualizado",
+      "rankedCount": "{count, plural, one {# atleta clasificado} other {# atletas clasificados}}",
+      "rank": "Posición",
+      "athlete": "Atleta",
+      "score": "Puntaje",
+      "tiebreak": "Desempate",
+      "points": "Puntos",
+      "noScore": "Sin puntaje",
+      "tiedAbbreviation": "E",
+      "noAthletes": "No hay atletas disponibles en esta división.",
+      "noDivisions": "Aún no hay divisiones disponibles en la tabla de posiciones."
+    }
+  },
+  "Scoring": {
+    "status": {
+      "DRAFT": "Borrador",
+      "SUBMITTED": "Enviado",
+      "VALIDATED": "Validado",
+      "REJECTED": "Rechazado",
+      "PUBLISHED": "Publicado",
+      "LOCKED": "Bloqueado"
+    }
+  },
   "Judging": {},
   "Validation": {},
   "Errors": {}

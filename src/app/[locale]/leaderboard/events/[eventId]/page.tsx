@@ -1,9 +1,16 @@
-import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
+import { getFormatter, getTranslations } from "next-intl/server";
 
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
+import type { GenderClassification } from "@/features/categories/categories.types";
+import type {
+  RankingDirection,
+  ScoreType,
+} from "@/features/events/events.types";
 import { getPublicEventLeaderboard } from "@/features/leaderboards/leaderboards.api";
 import type { LeaderboardStatus } from "@/features/leaderboards/leaderboards.types";
+import type { ScoreStatus } from "@/features/scores/scores.types";
+import { Link } from "@/i18n/navigation";
 
 type PublicEventLeaderboardPageProps = {
   params: Promise<{
@@ -12,12 +19,44 @@ type PublicEventLeaderboardPageProps = {
   }>;
 };
 
-function formatLabel(value: string) {
-  return value
-    .toLowerCase()
-    .replaceAll("_", " ")
-    .replace(/\b\w/g, (character) => character.toUpperCase());
-}
+const statusMessageKeys = {
+  UNOFFICIAL: "status.UNOFFICIAL",
+  UNDER_REVIEW: "status.UNDER_REVIEW",
+  PUBLISHED: "status.PUBLISHED",
+  FINAL: "status.FINAL",
+} as const satisfies Record<LeaderboardStatus, string>;
+
+const genderMessageKeys = {
+  MALE: "gender.MALE",
+  FEMALE: "gender.FEMALE",
+  MIXED: "gender.MIXED",
+  OPEN: "gender.OPEN",
+  OTHER: "gender.OTHER",
+} as const satisfies Record<GenderClassification, string>;
+
+const scoreTypeMessageKeys = {
+  FOR_TIME: "scoreType.FOR_TIME",
+  AMRAP_REPS: "scoreType.AMRAP_REPS",
+  MAX_WEIGHT: "scoreType.MAX_WEIGHT",
+  EMOM_REPS: "scoreType.EMOM_REPS",
+  ROUNDS_COMPLETED: "scoreType.ROUNDS_COMPLETED",
+  POINTS: "scoreType.POINTS",
+  CUSTOM: "scoreType.CUSTOM",
+} as const satisfies Record<ScoreType, string>;
+
+const rankingDirectionMessageKeys = {
+  LOWER_IS_BETTER: "rankingDirection.LOWER_IS_BETTER",
+  HIGHER_IS_BETTER: "rankingDirection.HIGHER_IS_BETTER",
+} as const satisfies Record<RankingDirection, string>;
+
+const scoreStatusMessageKeys = {
+  DRAFT: "status.DRAFT",
+  SUBMITTED: "status.SUBMITTED",
+  VALIDATED: "status.VALIDATED",
+  REJECTED: "status.REJECTED",
+  PUBLISHED: "status.PUBLISHED",
+  LOCKED: "status.LOCKED",
+} as const satisfies Record<ScoreStatus, string>;
 
 function getStatusClasses(status: LeaderboardStatus) {
   switch (status) {
@@ -32,17 +71,6 @@ function getStatusClasses(status: LeaderboardStatus) {
   }
 }
 
-function formatUpdatedAt(value: string | null) {
-  if (!value) {
-    return "Not yet updated";
-  }
-
-  return new Intl.DateTimeFormat("en", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
-}
-
 export default async function PublicEventLeaderboardPage({
   params,
 }: PublicEventLeaderboardPageProps) {
@@ -53,9 +81,16 @@ export default async function PublicEventLeaderboardPage({
     notFound();
   }
 
-  const leaderboard = await getPublicEventLeaderboard(numericEventId);
+  const [leaderboard, t, eventT, scoringT, format] = await Promise.all([
+    getPublicEventLeaderboard(numericEventId),
+    getTranslations("Leaderboard"),
+    getTranslations("Events"),
+    getTranslations("Scoring"),
+    getFormatter(),
+  ]);
+
   if (!leaderboard) {
-  notFound();
+    notFound();
   }
 
   const rankedAthletes = leaderboard.categories.reduce(
@@ -63,6 +98,16 @@ export default async function PublicEventLeaderboardPage({
       total + category.rows.filter((row) => row.rank !== null).length,
     0
   );
+
+  const updatedLabel = leaderboard.lastUpdatedAt
+    ? t("event.updated", {
+        date: format.dateTime(new Date(leaderboard.lastUpdatedAt), {
+          dateStyle: "medium",
+          timeStyle: "short",
+          hour12: true,
+        }),
+      })
+    : t("event.notYetUpdated");
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -73,13 +118,15 @@ export default async function PublicEventLeaderboardPage({
           href="/events"
           className="text-sm font-semibold text-orange-400 transition hover:text-orange-300"
         >
-          ← Back to events
+          {t("event.backToEvents")}
         </Link>
 
         <div className="mt-6 flex flex-col gap-5 border-b border-slate-800 pb-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-orange-400">
-              Event {leaderboard.eventCode}
+              {t("event.eyebrow", {
+                eventCode: leaderboard.eventCode,
+              })}
             </p>
 
             <h1 className="mt-2 text-4xl font-black tracking-tight">
@@ -87,11 +134,13 @@ export default async function PublicEventLeaderboardPage({
             </h1>
 
             <p className="mt-3 text-sm text-slate-400">
-              {formatLabel(leaderboard.scoreType)}
+              {eventT(scoreTypeMessageKeys[leaderboard.scoreType])}
               {" · "}
-              {formatLabel(leaderboard.rankingDirection)}
+              {eventT(
+                rankingDirectionMessageKeys[leaderboard.rankingDirection]
+              )}
               {" · "}
-              Updated {formatUpdatedAt(leaderboard.lastUpdatedAt)}
+              {updatedLabel}
             </p>
           </div>
 
@@ -101,11 +150,13 @@ export default async function PublicEventLeaderboardPage({
                 leaderboard.status
               )}`}
             >
-              {formatLabel(leaderboard.status)}
+              {t(statusMessageKeys[leaderboard.status])}
             </span>
 
             <span className="rounded-full border border-slate-700 bg-slate-900 px-3 py-1 text-xs font-semibold text-slate-300">
-              {rankedAthletes} ranked
+              {t("event.rankedCount", {
+                count: rankedAthletes,
+              })}
             </span>
           </div>
         </div>
@@ -117,10 +168,15 @@ export default async function PublicEventLeaderboardPage({
               className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70"
             >
               <div className="border-b border-slate-800 px-6 py-5">
-                <h2 className="text-xl font-bold">{category.categoryName}</h2>
+                <h2 className="text-xl font-bold">
+                  {category.categoryName}
+                </h2>
 
                 <p className="mt-1 text-sm text-slate-400">
-                  {[category.genderClassification, category.divisionLabel]
+                  {[
+                    t(genderMessageKeys[category.genderClassification]),
+                    category.divisionLabel,
+                  ]
                     .filter(Boolean)
                     .join(" · ")}
                 </p>
@@ -130,11 +186,13 @@ export default async function PublicEventLeaderboardPage({
                 <table className="w-full min-w-[48rem] text-left">
                   <thead className="bg-slate-950/70 text-xs uppercase tracking-wide text-slate-400">
                     <tr>
-                      <th className="px-6 py-4">Rank</th>
-                      <th className="px-6 py-4">Athlete</th>
-                      <th className="px-6 py-4">Score</th>
-                      <th className="px-6 py-4">Tiebreak</th>
-                      <th className="px-6 py-4 text-right">Points</th>
+                      <th className="px-6 py-4">{t("event.rank")}</th>
+                      <th className="px-6 py-4">{t("event.athlete")}</th>
+                      <th className="px-6 py-4">{t("event.score")}</th>
+                      <th className="px-6 py-4">{t("event.tiebreak")}</th>
+                      <th className="px-6 py-4 text-right">
+                        {t("event.points")}
+                      </th>
                     </tr>
                   </thead>
 
@@ -158,14 +216,16 @@ export default async function PublicEventLeaderboardPage({
                               <span className="text-slate-600">—</span>
                             ) : (
                               <span className="text-lg font-black text-orange-400">
-                                {row.tied ? "T" : ""}
-                                {row.rank}
+                                {row.tied && t("event.tiedAbbreviation")}
+                                {format.number(row.rank)}
                               </span>
                             )}
                           </td>
 
                           <td className="px-6 py-5">
-                            <p className="font-semibold">{row.athleteName}</p>
+                            <p className="font-semibold">
+                              {row.athleteName}
+                            </p>
 
                             {athleteDetails && (
                               <p className="mt-1 text-xs text-slate-500">
@@ -176,12 +236,14 @@ export default async function PublicEventLeaderboardPage({
 
                           <td className="px-6 py-5">
                             <p className="font-mono text-base font-bold">
-                              {row.scoreDisplay ?? "No score"}
+                              {row.scoreDisplay ?? t("event.noScore")}
                             </p>
 
                             {row.scoreStatus && (
                               <p className="mt-1 text-xs text-slate-500">
-                                {formatLabel(row.scoreStatus)}
+                                {scoringT(
+                                  scoreStatusMessageKeys[row.scoreStatus]
+                                )}
                               </p>
                             )}
                           </td>
@@ -191,7 +253,9 @@ export default async function PublicEventLeaderboardPage({
                           </td>
 
                           <td className="px-6 py-5 text-right font-bold">
-                            {row.placementPoints ?? "—"}
+                            {row.placementPoints === null
+                              ? "—"
+                              : format.number(row.placementPoints)}
                           </td>
                         </tr>
                       );
@@ -203,7 +267,7 @@ export default async function PublicEventLeaderboardPage({
                           colSpan={5}
                           className="px-6 py-10 text-center text-sm text-slate-500"
                         >
-                          No athletes are available in this division.
+                          {t("event.noAthletes")}
                         </td>
                       </tr>
                     )}
@@ -215,7 +279,7 @@ export default async function PublicEventLeaderboardPage({
 
           {leaderboard.categories.length === 0 && (
             <div className="rounded-2xl border border-dashed border-slate-700 p-12 text-center text-slate-400">
-              No leaderboard divisions are available yet.
+              {t("event.noDivisions")}
             </div>
           )}
         </div>
