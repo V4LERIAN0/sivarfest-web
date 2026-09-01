@@ -5,6 +5,7 @@ import { getAdminEventLeaderboardPreview } from "@/features/leaderboards/leaderb
 import { getAdminEventScores } from "@/features/scores/scores.api";
 import { ScoreEntryForm } from "@/features/scores/ScoreEntryForm";
 import { ScoreLifecycleActions } from "@/features/scores/ScoreLifecycleActions";
+import { ScoreAuditHistory } from "@/features/scores/ScoreAuditHistory";
 
 interface HeatPosition {
   heatName: string;
@@ -202,6 +203,12 @@ export default async function AdminEventScoresPage({
       {score.rejectionReason}
     </p>
   )}
+  {score && (
+  <ScoreAuditHistory
+    key={score.updatedAt}
+    score={score}
+  />
+)}
 </td>
 
                         <td className="px-4 py-4 text-slate-300">

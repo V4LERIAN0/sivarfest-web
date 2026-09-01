@@ -6,6 +6,7 @@ import type {
 } from "@/features/events/events.types";
 import { revalidatePath } from "next/cache";
 import {
+  getAdminScoreAudit,
   lockAdminScore,
   publishAdminScore,
   rejectAdminScore,
@@ -15,10 +16,12 @@ import {
   validateAdminScore,
 } from "./scores.api";
 import type {
+  ScoreAuditState,
   ScoreEntryRequest,
   ScoreFormState,
   ScoreLifecycleAction
 } from "./scores.types";
+
 
 const scorePath = (
   competitionId: number,
@@ -120,6 +123,25 @@ export async function transitionScoreAction(
     error: null,
     success: lifecycleSuccessMessage(transition),
   };
+}
+
+export async function getScoreAuditAction(
+  scoreId: number
+): Promise<ScoreAuditState> {
+  try {
+    return {
+      entries: await getAdminScoreAudit(scoreId),
+      error: null,
+    };
+  } catch (error) {
+    return {
+      entries: [],
+      error: errorMessage(
+        error,
+        "The score history could not be loaded."
+      ),
+    };
+  }
 }
 
 function lifecycleReason(formData: FormData) {

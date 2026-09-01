@@ -13,7 +13,7 @@ export type ScoreStatus =
   | "PUBLISHED"
   | "LOCKED";
 
-  export type ScoreLifecycleAction =
+export type ScoreLifecycleAction =
   | "VALIDATE"
   | "REJECT"
   | "PUBLISH"
@@ -95,6 +95,11 @@ export interface ScoreAuditResponse {
   scoreSnapshot: string;
   reason: string | null;
   occurredAt: string;
+}
+
+export interface ScoreAuditState {
+  entries: ScoreAuditResponse[];
+  error: string | null;
 }
 
 export interface ScoreFormState {
