@@ -74,7 +74,8 @@ export default async function EventsPage() {
               return (
                 <article
                   key={event.id}
-                  className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6"
+                  id={`event-${event.id}`}
+                  className="scroll-mt-28 rounded-2xl border border-slate-800 bg-slate-900/70 p-6"
                 >
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="rounded-full bg-orange-500 px-3 py-1 text-xs font-black text-black">

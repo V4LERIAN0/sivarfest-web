@@ -9,8 +9,13 @@
     "events": "Events",
     "leaderboard": "Leaderboard",
     "heats": "Heats",
+    "login": "Sign in",
     "admin": "Admin",
     "publicSite": "Public site",
+    "home": "SIVARFEST home",
+    "primary": "Primary navigation",
+    "mobilePrimary": "Mobile navigation",
+    "instagram": "SIVARFEST on Instagram",
     "language": {
       "label": "Language",
       "english": "English",
@@ -27,24 +32,73 @@
     "invalidCredentials": "Invalid email or password.",
     "signOut": "Sign out",
     "signingOut": "Signing out...",
-    "portalAccess": "Portal access",
+    "portalAccess": "Competition access",
     "description": "Admins manage the competition, and judges can review their event-day assignments."
   },
   "Competitions": {
   "publicHome": {
-    "eyebrow": "Functional Fitness Competition",
-    "fallbackDescription": "Official competition portal for athletes, heats, workouts, and results.",
-    "viewAthletes": "View Athletes",
-    "viewEvents": "View Events",
+    "registration": {
+      "CLOSED": "Registration closed",
+      "OPEN": "Registration open",
+      "WAITLIST": "Waitlist open",
+      "FULL": "Registration full"
+    },
+    "fifthEdition": "Fifth edition",
+    "followInstagram": "Follow on Instagram",
+    "viewLeaderboard": "View leaderboard",
     "date": "Date",
     "location": "Location",
+    "countdownLabel": "Countdown",
+    "countdown": "{days, plural, one {# day} other {# days}}",
+    "eventDay": "Competition day",
+    "eventFinished": "Event finished",
     "categories": "Categories",
+    "divisionNames": "SC / RX",
     "athletes": "Athletes",
     "tba": "TBA",
+    "ticker": "SIVARFEST 5.0 · SEPTEMBER 19, 2026 · SAN SALVADOR",
+    "overviewEyebrow": "The competition",
+    "overviewTitle": "The Historic Center becomes the arena.",
+    "directoryEyebrow": "Official roster",
+    "directoryTitle": "Find your name. Claim your place.",
+    "directoryDescription": "SC and RX, side by side. Meet the athletes taking the SIVARFEST floor this September 19.",
+    "viewFullRoster": "See complete roster",
+    "emptyRosterTitle": "Roster coming soon",
+    "emptyRosterDescription": "We’re getting the SC and RX lineup ready.",
+    "athleteCount": "{count, plural, one {# athlete} other {# athletes}}",
+    "gender": {
+      "FEMALE": "Women",
+      "MALE": "Men",
+      "MIXED": "Mixed",
+      "OPEN": "Open",
+      "OTHER": "Other"
+    },
+    "categoryRosterPending": "Roster pending for this division.",
+    "profilePhoto": "Profile photo for {name}",
+    "independentAthlete": "Independent athlete",
+    "eventsEyebrow": "Competition tests",
+    "viewEvents": "Explore all events",
     "officialEvents": "Official Events",
     "event": "Event {eventCode}",
-    "emptyEventsTitle": "No events available",
-    "emptyEventsDescription": "Official competition events will appear here once they are published."
+    "viewEventDetails": "View details",
+    "viewEventResults": "View results",
+    "emptyEventsTitle": "The next challenge is coming",
+    "emptyEventsDescription": "Stay ready. The next SIVARFEST test will be revealed soon.",
+    "instagramEyebrow": "Follow the action",
+    "instagramTitle": "See what’s next first on Instagram.",
+    "instagramDescription": "WODs, schedules, athletes, and every update on the road to September 19.",
+    "instagramCta": "Follow sivarfest5.0",
+    "venueEyebrow": "The venue",
+    "venueTitle": "Built for an unforgettable floor.",
+    "venueDescription": "SIVARFEST arrives at Centro Histórico de San Salvador on September 19.",
+    "venueImageAlt": "SIVARFEST competition floor preview at Centro Histórico de San Salvador",
+    "floorPreview": "Competition floor preview",
+    "sponsorsEyebrow": "SIVARFEST partners",
+    "sponsorsTitle": "The partners behind SIVARFEST.",
+    "sponsorsDescription": "Meet the brands joining SIVARFEST 2026.",
+    "sponsorInstagram": "Visit {name} on Instagram",
+    "footerLine": "September 19 · Centro Histórico de San Salvador",
+    "footerEdition": "Fifth edition"
   }
 },
   "Athletes": {
@@ -54,7 +108,7 @@
     "countryTba": "Country TBA",
     "independentAthlete": "Independent athlete",
     "emptyTitle": "No athletes available",
-    "emptyDescription": "Registered competitors will appear here once they are publicly available."
+    "emptyDescription": "The official SC and RX roster is being prepared."
   }
 },
   "Categories": {},
@@ -85,7 +139,7 @@
       "viewResults": "View results →",
       "resultsNotReleased": "Results not released",
       "emptyTitle": "No events available",
-      "emptyDescription": "Competition events will appear here once they are released."
+      "emptyDescription": "The next SIVARFEST tests will be revealed soon."
     }
   },
   "Heats": {
