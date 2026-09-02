@@ -1,4 +1,4 @@
-import { CalendarClock, Clock3, Dumbbell, Users } from "lucide-react";
+import { CalendarClock, Clock3, Dumbbell, Trophy, Users } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
@@ -75,13 +75,22 @@ export default async function PublicHeatsPage() {
         title={t("publicSchedule.title")}
         description={t("publicSchedule.description")}
         aside={
-          <Link
-            href="/events"
-            className="inline-flex min-h-12 items-center justify-center gap-2 border border-[#ffd400]/45 bg-[#ffd400]/10 px-5 py-3 text-sm font-black uppercase tracking-[0.08em] text-[#ffe45c] transition hover:border-[#ffd400] hover:bg-[#ffd400]/15"
-          >
-            <Dumbbell className="h-4 w-4" aria-hidden="true" />
-            {t("publicSchedule.viewEvents")}
-          </Link>
+          <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+            <Link
+              href="/events"
+              className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/18 bg-white/[0.035] px-5 py-3 text-sm font-black uppercase tracking-[0.08em] text-white/75 transition hover:border-[#ffd400]/55 hover:text-[#ffe45c]"
+            >
+              <Dumbbell className="h-4 w-4" aria-hidden="true" />
+              {t("publicSchedule.viewEvents")}
+            </Link>
+            <Link
+              href="/leaderboard"
+              className="sivar-primary-button inline-flex min-h-12 items-center justify-center gap-2 px-5 py-3 text-sm font-black uppercase tracking-[0.08em]"
+            >
+              <Trophy className="h-4 w-4" aria-hidden="true" />
+              {t("publicSchedule.liveLeaderboard")}
+            </Link>
+          </div>
         }
       />
 
