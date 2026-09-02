@@ -1,4 +1,8 @@
+"use client";
+
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
 import type { AthletePublicResponse } from "@/features/athletes/athletes.types";
 import type {
@@ -9,6 +13,7 @@ import type {
 type AthleteDirectoryProps = {
   athletes: AthletePublicResponse[];
   categories: CategoryResponse[];
+  initialLimit?: number;
 };
 
 type CategoryGroup = {
@@ -165,9 +170,27 @@ function buildGroups(
 export function AthleteDirectory({
   athletes,
   categories,
+  initialLimit,
 }: AthleteDirectoryProps) {
   const t = useTranslations("Competitions.publicHome");
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
+    () => new Set()
+  );
   const divisions = buildGroups(athletes, categories);
+
+  function toggleCategory(categoryKey: string) {
+    setExpandedCategories((current) => {
+      const next = new Set(current);
+
+      if (next.has(categoryKey)) {
+        next.delete(categoryKey);
+      } else {
+        next.add(categoryKey);
+      }
+
+      return next;
+    });
+  }
 
   if (divisions.length === 0) {
     return (
@@ -207,12 +230,24 @@ export function AthleteDirectory({
             </header>
 
             <div className="grid divide-y divide-white/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
-              {division.categories.map((category) => (
-                <section
-                  key={category.key}
-                  aria-labelledby={`category-${category.key}`}
-                  className="min-w-0"
-                >
+              {division.categories.map((category) => {
+                const categoryStateKey = `${division.key}-${category.key}`;
+                const isExpandable =
+                  initialLimit !== undefined &&
+                  category.athletes.length > initialLimit;
+                const isExpanded = expandedCategories.has(categoryStateKey);
+                const visibleAthletes =
+                  isExpandable && !isExpanded
+                    ? category.athletes.slice(0, initialLimit)
+                    : category.athletes;
+                const listId = `athlete-list-${categoryStateKey.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+
+                return (
+                  <section
+                    key={category.key}
+                    aria-labelledby={`category-${category.key}`}
+                    className="min-w-0"
+                  >
                   <header className="flex items-center justify-between gap-3 border-b border-white/8 px-4 py-3 sm:px-5">
                     <h4
                       id={`category-${category.key}`}
@@ -230,8 +265,8 @@ export function AthleteDirectory({
                       {t("categoryRosterPending")}
                     </p>
                   ) : (
-                    <ul className="divide-y divide-white/8">
-                      {category.athletes.map((athlete) => (
+                    <ul id={listId} className="divide-y divide-white/8">
+                      {visibleAthletes.map((athlete) => (
                         <li
                           key={athlete.id}
                           className="flex items-center gap-3 px-4 py-3 transition hover:bg-white/[0.035] sm:px-5"
@@ -279,8 +314,32 @@ export function AthleteDirectory({
                       ))}
                     </ul>
                   )}
+
+                  {isExpandable && (
+                    <div className="border-t border-white/10 p-3 sm:p-4">
+                      <button
+                        type="button"
+                        onClick={() => toggleCategory(categoryStateKey)}
+                        aria-expanded={isExpanded}
+                        aria-controls={listId}
+                        className="flex min-h-11 w-full items-center justify-center gap-2 border border-[#ffd400]/35 bg-[#ffd400]/[0.07] px-3 py-2 text-xs font-black uppercase tracking-[0.08em] text-[#ffe45c] transition hover:border-[#ffd400]/70 hover:bg-[#ffd400]/[0.12]"
+                      >
+                        {isExpanded
+                          ? t("showFewerAthletes", { count: initialLimit })
+                          : t("showAllAthletes", {
+                              count: category.athletes.length,
+                            })}
+                        {isExpanded ? (
+                          <ChevronUp className="h-4 w-4" aria-hidden="true" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </section>
-              ))}
+                );
+              })}
             </div>
           </section>
         );

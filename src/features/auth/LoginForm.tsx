@@ -8,16 +8,18 @@ import { login } from "@/features/auth/auth.api";
 
 type LoginFormProps = {
   judgeDestination?: string;
+  athleteDestination?: string;
 };
 
 export function LoginForm({
   judgeDestination = "/judge",
+  athleteDestination = "/",
 }: LoginFormProps) {
   const router = useRouter();
   const t = useTranslations("Auth");
 
-  const [email, setEmail] = useState("admin@sivarfest.fit");
-  const [password, setPassword] = useState("Admin123!");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +42,7 @@ export function LoginForm({
       }
 
       if (user.role === "ATHLETE") {
-        router.push("/athlete");
+        router.push(athleteDestination);
         router.refresh();
         return;
       }
@@ -63,7 +65,7 @@ export function LoginForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="text-sm font-bold text-slate-200">
+        <label className="text-xs font-black uppercase tracking-[0.12em] text-white/65">
           {t("email")}
         </label>
 
@@ -71,14 +73,14 @@ export function LoginForm({
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none ring-orange-500 focus:ring-2"
-          placeholder="admin@sivarfest.fit"
+          className="mt-2 min-h-12 w-full border border-white/15 bg-black/55 px-4 py-3 text-white outline-none transition placeholder:text-white/25 focus:border-[#ffd400]/70 focus:ring-2 focus:ring-[#ffd400]/20"
+          placeholder={t("emailPlaceholder")}
           required
         />
       </div>
 
       <div>
-        <label className="text-sm font-bold text-slate-200">
+        <label className="text-xs font-black uppercase tracking-[0.12em] text-white/65">
           {t("password")}
         </label>
 
@@ -86,14 +88,14 @@ export function LoginForm({
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none ring-orange-500 focus:ring-2"
+          className="mt-2 min-h-12 w-full border border-white/15 bg-black/55 px-4 py-3 text-white outline-none transition placeholder:text-white/25 focus:border-[#ffd400]/70 focus:ring-2 focus:ring-[#ffd400]/20"
           placeholder={t("passwordPlaceholder")}
           required
         />
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
+        <div className="border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
           {error}
         </div>
       )}
@@ -101,7 +103,7 @@ export function LoginForm({
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full rounded-xl bg-orange-500 px-5 py-3 text-sm font-black text-black transition hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-60"
+        className="sivar-primary-button min-h-12 w-full px-5 py-3 text-sm font-black uppercase tracking-[0.08em] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isLoading ? t("signingIn") : t("signIn")}
       </button>
