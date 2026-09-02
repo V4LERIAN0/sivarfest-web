@@ -6,8 +6,9 @@ import { DocumentLanguage } from "@/components/i18n/DocumentLanguage";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SIVARFEST",
-  description: "SivarFest competition portal",
+  title: "SIVARFEST 2026 | San Salvador",
+  description:
+    "SIVARFEST 2026 arrives at Centro Histórico de San Salvador on September 19.",
 };
 
 export default async function RootLayout({

@@ -130,6 +130,134 @@
 }
 
 body {
-  background: #020617;
+  background: #050505;
   color: white;
+}
+
+::selection {
+  background: #ffd400;
+  color: #050505;
+}
+
+.sivar-public {
+  background:
+    radial-gradient(circle at 12% 22%, rgb(255 90 0 / 8%), transparent 28rem),
+    radial-gradient(circle at 88% 72%, rgb(255 212 0 / 6%), transparent 34rem),
+    #050505;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.sivar-display {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", "Arial Narrow", sans-serif;
+  font-stretch: condensed;
+  font-weight: 800;
+  letter-spacing: -0.012em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.sivar-section-title {
+  letter-spacing: 0.005em;
+  line-height: 1.04;
+}
+
+.sivar-kicker {
+  color: #ffd400;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.sivar-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 4%) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+.sivar-hazard {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      #ffd400 0,
+      #ffd400 1.6rem,
+      #f6bb00 1.6rem,
+      #f6bb00 3.2rem
+    );
+  box-shadow: inset 0 1px rgb(255 255 255 / 25%);
+}
+
+.sivar-hazard .sivar-display {
+  line-height: 1.2;
+}
+
+.sivar-primary-button {
+  background: #ffd400;
+  box-shadow: 0.35rem 0.35rem 0 #ff5a00;
+  color: #050505;
+  transition:
+    box-shadow 160ms ease,
+    transform 160ms ease,
+    background-color 160ms ease;
+}
+
+.sivar-primary-button:hover {
+  background: #ffe45c;
+  box-shadow: 0.2rem 0.2rem 0 #ff5a00;
+  transform: translate(0.15rem, 0.15rem);
+}
+
+.sivar-primary-button:focus-visible,
+.sivar-public a:focus-visible,
+.sivar-public button:focus-visible {
+  outline: 2px solid #ffd400;
+  outline-offset: 4px;
+}
+
+.sivar-stat-card,
+.sivar-event-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: rgb(255 255 255 / 2.5%);
+}
+
+.sivar-stat-card {
+  min-height: 10.5rem;
+  padding: 1.25rem;
+}
+
+.sivar-stat-card::after {
+  position: absolute;
+  right: -1.5rem;
+  bottom: -1.5rem;
+  width: 4rem;
+  height: 4rem;
+  border: 0.7rem solid rgb(255 212 0 / 12%);
+  content: "";
+  transform: rotate(45deg);
+}
+
+.sivar-event-card {
+  min-height: 17rem;
+  padding: 1.5rem;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.sivar-event-card:hover {
+  border-color: rgb(255 212 0 / 40%);
+  background: rgb(255 255 255 / 4%);
+  transform: translateY(-0.2rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sivar-primary-button,
+  .sivar-event-card {
+    transition: none;
+  }
 }
