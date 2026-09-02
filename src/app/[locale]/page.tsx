@@ -72,7 +72,7 @@ export default async function HomePage() {
     .slice(0, 4);
 
   return (
-    <main className="sivar-public min-h-screen overflow-hidden bg-[#050505] text-white">
+    <main className="sivar-public min-h-screen overflow-x-clip bg-[#050505] text-white">
       <PublicNavbar />
 
       <section className="relative isolate overflow-hidden border-b border-white/10 sm:min-h-[calc(100svh-5rem)]">
