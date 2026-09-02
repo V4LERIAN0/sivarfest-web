@@ -15,6 +15,7 @@ export default async function LocalizedLoginPage({
     <LoginPageContent
       showLocaleSwitcher
       judgeDestination={`/${locale}/judge`}
+      athleteDestination={`/${locale}`}
     />
   );
 }

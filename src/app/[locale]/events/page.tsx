@@ -1,6 +1,16 @@
+import {
+  ArrowRight,
+  CalendarClock,
+  Clock3,
+  Dumbbell,
+  ListChecks,
+  Trophy,
+} from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
+import { PublicPageFooter } from "@/components/public/PublicPageFooter";
+import { PublicPageHeader } from "@/components/public/PublicPageHeader";
 import { getPublicEvents } from "@/features/events/events.api";
 import type { ScoreType } from "@/features/events/events.types";
 import { Link } from "@/i18n/navigation";
@@ -22,133 +32,163 @@ export default async function EventsPage() {
     getPublicEvents(),
     getTranslations("Events"),
   ]);
+  const orderedEvents = [...events].sort(
+    (first, second) => first.displayOrder - second.displayOrder
+  );
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
+    <main className="sivar-public min-h-screen bg-[#050505] text-white">
       <PublicNavbar />
 
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <p className="text-sm font-bold uppercase tracking-[0.3em] text-orange-400">
-          {t("publicList.eyebrow")}
-        </p>
+      <PublicPageHeader
+        eyebrow={t("publicList.eyebrow")}
+        title={t("publicList.title")}
+        description={t("publicList.description")}
+        aside={
+          <Link
+            href="/heats"
+            className="inline-flex min-h-12 items-center justify-center gap-2 border border-[#ffd400]/45 bg-[#ffd400]/10 px-5 py-3 text-sm font-black uppercase tracking-[0.08em] text-[#ffe45c] transition hover:border-[#ffd400] hover:bg-[#ffd400]/15"
+          >
+            <CalendarClock className="h-4 w-4" aria-hidden="true" />
+            {t("publicList.viewSchedule")}
+          </Link>
+        }
+      />
 
-        <h1 className="mt-3 text-4xl font-black">
-          {t("publicList.title")}
-        </h1>
+      <section className="px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          {orderedEvents.length === 0 ? (
+            <div className="border border-dashed border-white/20 bg-white/[0.025] p-10 text-center sm:p-14">
+              <Dumbbell
+                className="mx-auto h-8 w-8 text-[#ffd400]"
+                aria-hidden="true"
+              />
+              <h2 className="sivar-display mt-5 text-3xl">
+                {t("publicList.emptyTitle")}
+              </h2>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-white/50">
+                {t("publicList.emptyDescription")}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-5">
+              {orderedEvents.map((event, index) => {
+                let timeCap: string | null = null;
 
-        {events.length === 0 ? (
-          <div className="mt-8 rounded-2xl border border-dashed border-slate-700 p-12 text-center">
-            <h2 className="text-xl font-bold">
-              {t("publicList.emptyTitle")}
-            </h2>
+                if (event.timeCapSeconds) {
+                  const minutes = Math.floor(event.timeCapSeconds / 60);
+                  const seconds = event.timeCapSeconds % 60;
 
-            <p className="mt-2 text-sm text-slate-400">
-              {t("publicList.emptyDescription")}
-            </p>
-          </div>
-        ) : (
-          <div className="mt-8 space-y-5">
-            {events.map((event) => {
-              let timeCap: string | null = null;
-
-              if (event.timeCapSeconds) {
-                const minutes = Math.floor(event.timeCapSeconds / 60);
-                const seconds = event.timeCapSeconds % 60;
-
-                if (minutes === 0) {
-                  timeCap = t("publicList.seconds", {
-                    seconds,
-                  });
-                } else if (seconds === 0) {
-                  timeCap = t("publicList.minutes", {
-                    minutes,
-                  });
-                } else {
-                  timeCap = t("publicList.minutesAndSeconds", {
-                    minutes,
-                    seconds,
-                  });
+                  if (minutes === 0) {
+                    timeCap = t("publicList.seconds", { seconds });
+                  } else if (seconds === 0) {
+                    timeCap = t("publicList.minutes", { minutes });
+                  } else {
+                    timeCap = t("publicList.minutesAndSeconds", {
+                      minutes,
+                      seconds,
+                    });
+                  }
                 }
-              }
 
-              return (
-                <article
-                  key={event.id}
-                  id={`event-${event.id}`}
-                  className="scroll-mt-28 rounded-2xl border border-slate-800 bg-slate-900/70 p-6"
-                >
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="rounded-full bg-orange-500 px-3 py-1 text-xs font-black text-black">
-                      {t("publicList.event", {
-                        eventCode: event.eventCode,
-                      })}
-                    </span>
+                return (
+                  <article
+                    key={event.id}
+                    id={`event-${event.id}`}
+                    className="scroll-mt-28 overflow-hidden border border-white/12 bg-[#0b0b0b]"
+                  >
+                    <div className="grid lg:grid-cols-[11rem_minmax(0,1fr)]">
+                      <div className="relative overflow-hidden border-b border-white/10 bg-white/[0.025] p-6 lg:border-b-0 lg:border-r">
+                        <span className="sivar-display text-7xl text-white/10">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <p className="mt-8 text-xs font-black uppercase tracking-[0.14em] text-[#ff7a2f] lg:mt-20">
+                          {t("publicList.event", {
+                            eventCode: event.eventCode,
+                          })}
+                        </p>
+                      </div>
 
-                    <span className="rounded-full border border-slate-700 px-3 py-1 text-xs font-bold text-slate-300">
-                      {t(scoreTypeMessageKeys[event.scoreType])}
-                    </span>
+                      <div className="p-5 sm:p-7 lg:p-9">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="border border-[#ffd400]/30 bg-[#ffd400]/10 px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-[#ffe45c]">
+                            {t(scoreTypeMessageKeys[event.scoreType])}
+                          </span>
+                          {timeCap && (
+                            <span className="inline-flex items-center gap-1.5 border border-white/15 px-3 py-1 text-xs font-bold text-white/55">
+                              <Clock3 className="h-3.5 w-3.5" aria-hidden="true" />
+                              {t("publicList.timeCap", {
+                                duration: timeCap,
+                              })}
+                            </span>
+                          )}
+                        </div>
 
-                    {timeCap && (
-                      <span className="rounded-full border border-slate-700 px-3 py-1 text-xs font-bold text-slate-300">
-                        {t("publicList.timeCap", {
-                          duration: timeCap,
-                        })}
-                      </span>
-                    )}
-                  </div>
+                        <h2 className="sivar-display mt-5 text-4xl leading-none text-[#f2f0eb] sm:text-5xl">
+                          {event.name}
+                        </h2>
 
-                  <h2 className="mt-4 text-2xl font-black">{event.name}</h2>
+                        {event.description && (
+                          <p className="mt-4 max-w-3xl text-base leading-7 text-white/60">
+                            {event.description}
+                          </p>
+                        )}
 
-                  {event.description && (
-                    <p className="mt-3 text-slate-300">
-                      {event.description}
-                    </p>
-                  )}
+                        {(event.workoutInstructions || event.movementStandards) && (
+                          <div className="mt-8 grid gap-4 xl:grid-cols-2">
+                            {event.workoutInstructions && (
+                              <section className="border border-white/10 bg-black/35 p-5">
+                                <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-[#ffd400]">
+                                  <Dumbbell className="h-4 w-4" aria-hidden="true" />
+                                  {t("publicList.workout")}
+                                </h3>
+                                <p className="mt-4 whitespace-pre-line text-sm leading-7 text-white/70 sm:text-base">
+                                  {event.workoutInstructions}
+                                </p>
+                              </section>
+                            )}
 
-                  {event.workoutInstructions && (
-                    <div className="mt-5 rounded-xl bg-black/30 p-4">
-                      <h3 className="text-sm font-bold uppercase tracking-wide text-slate-400">
-                        {t("publicList.workout")}
-                      </h3>
+                            {event.movementStandards && (
+                              <section className="border border-white/10 bg-black/35 p-5">
+                                <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-[#ffd400]">
+                                  <ListChecks className="h-4 w-4" aria-hidden="true" />
+                                  {t("publicList.standards")}
+                                </h3>
+                                <p className="mt-4 whitespace-pre-line text-sm leading-7 text-white/70 sm:text-base">
+                                  {event.movementStandards}
+                                </p>
+                              </section>
+                            )}
+                          </div>
+                        )}
 
-                      <p className="mt-2 whitespace-pre-line leading-7 text-slate-200">
-                        {event.workoutInstructions}
-                      </p>
+                        <div className="mt-8 flex justify-end border-t border-white/10 pt-5">
+                          {event.scoreVisible && event.status !== "DRAFT" ? (
+                            <Link
+                              href={`/leaderboard/events/${event.id}`}
+                              className="inline-flex min-h-11 items-center justify-center gap-2 bg-[#ffd400] px-5 py-3 text-sm font-black uppercase tracking-[0.08em] text-black transition hover:bg-[#ffe45c]"
+                            >
+                              <Trophy className="h-4 w-4" aria-hidden="true" />
+                              {t("publicList.viewResults")}
+                            </Link>
+                          ) : (
+                            <span className="inline-flex items-center gap-2 text-sm font-bold text-white/35">
+                              {t("publicList.resultsNotReleased")}
+                              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  )}
-
-                  {event.movementStandards && (
-                    <div className="mt-4 rounded-xl bg-black/30 p-4">
-                      <h3 className="text-sm font-bold uppercase tracking-wide text-slate-400">
-                        {t("publicList.standards")}
-                      </h3>
-
-                      <p className="mt-2 whitespace-pre-line leading-7 text-slate-200">
-                        {event.movementStandards}
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="mt-6 border-t border-slate-800 pt-4">
-                    {event.scoreVisible && event.status !== "DRAFT" ? (
-                      <Link
-                        href={`/leaderboard/events/${event.id}`}
-                        className="inline-flex items-center font-semibold text-orange-400 transition hover:text-orange-300"
-                      >
-                        {t("publicList.viewResults")}
-                      </Link>
-                    ) : (
-                      <span className="text-sm font-medium text-slate-500">
-                        {t("publicList.resultsNotReleased")}
-                      </span>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </section>
+
+      <PublicPageFooter />
     </main>
   );
 }

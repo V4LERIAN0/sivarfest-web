@@ -25,6 +25,7 @@
   },
   "Auth": {
     "email": "Correo electrónico",
+    "emailPlaceholder": "nombre@sivarfest.fit",
     "password": "Contraseña",
     "passwordPlaceholder": "Tu contraseña",
     "signIn": "Iniciar sesión",
@@ -32,8 +33,10 @@
     "invalidCredentials": "Correo electrónico o contraseña incorrectos.",
     "signOut": "Cerrar sesión",
     "signingOut": "Cerrando sesión...",
-    "portalAccess": "Acceso de competencia",
-    "description": "Los administradores gestionan la competencia y los jueces pueden consultar sus asignaciones del día del evento."
+    "portalAccess": "Acceso SIVARFEST",
+    "description": "Ingresa con las credenciales que te fueron asignadas para acceder a tu espacio de competencia.",
+    "welcomeTitle": "Tu competencia empieza aquí.",
+    "welcomeDescription": "Atletas, jueces y organización: toda la información que necesitas para el día de SIVARFEST, en un solo lugar."
   },
   "Competitions": {
   "publicHome": {
@@ -66,6 +69,8 @@
     "emptyRosterTitle": "El roster viene pronto",
     "emptyRosterDescription": "Estamos preparando la alineación de SC y RX.",
     "athleteCount": "{count, plural, one {# atleta} other {# atletas}}",
+    "showAllAthletes": "Ver los {count} atletas",
+    "showFewerAthletes": "Mostrar solo {count}",
     "gender": {
       "FEMALE": "Mujeres",
       "MALE": "Hombres",
@@ -87,7 +92,7 @@
     "instagramEyebrow": "Sigue la acción",
     "instagramTitle": "Descubre primero lo que viene en Instagram.",
     "instagramDescription": "WODs, horarios, atletas y cada actualización rumbo al 19 de septiembre.",
-    "instagramCta": "Seguir a sivarfest5.0",
+    "instagramCta": "Seguir a @sivarfest5.0",
     "venueEyebrow": "La sede",
     "venueTitle": "Diseñado para un floor inolvidable.",
     "venueDescription": "SIVARFEST llega al Centro Histórico de San Salvador este 19 de septiembre.",
@@ -104,7 +109,9 @@
   "Athletes": {
   "publicList": {
     "eyebrow": "Competidores",
-    "title": "Atletas",
+    "title": "Roster oficial",
+    "description": "Conoce a los atletas de SC y RX que tomarán el floor de SIVARFEST.",
+    "total": "{count, plural, one {# atleta confirmado} other {# atletas confirmados}}",
     "countryTba": "País por confirmar",
     "independentAthlete": "Atleta independiente",
     "emptyTitle": "No hay atletas disponibles",
@@ -128,7 +135,8 @@
     },
     "publicList": {
       "eyebrow": "Workouts",
-      "title": "Eventos",
+      "title": "Eventos oficiales",
+      "description": "Consulta cada prueba, sus indicaciones y los resultados oficiales cuando sean publicados.",
       "event": "Evento {eventCode}",
       "timeCap": "Límite de tiempo: {duration}",
       "seconds": "{seconds, plural, one {# segundo} other {# segundos}}",
@@ -137,6 +145,7 @@
       "workout": "Descripción",
       "standards": "Estándares",
       "viewResults": "Ver resultados →",
+      "viewSchedule": "Ver horario de heats",
       "resultsNotReleased": "Resultados aún no publicados",
       "emptyTitle": "No hay eventos disponibles",
       "emptyDescription": "Las próximas pruebas de SIVARFEST se revelarán muy pronto."
@@ -156,6 +165,7 @@
     "eyebrow": "Día de competencia",
     "title": "Horario de heats",
     "description": "Encuentra tu evento, horario de heat y carril o estación asignada.",
+    "viewEvents": "Ver eventos",
     "event": "Evento {eventCode}",
     "heatCount": "{count, plural, one {# heat} other {# heats}}",
     "timeTba": "Horario por confirmar",

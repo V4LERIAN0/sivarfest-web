@@ -5,6 +5,7 @@ export default function LoginPage() {
     <LoginPageContent
       showLocaleSwitcher={false}
       judgeDestination="/judge"
+      athleteDestination="/"
     />
   );
 }

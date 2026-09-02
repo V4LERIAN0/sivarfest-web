@@ -243,17 +243,14 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <Link
-              href="/athletes"
-              className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-[0.1em] text-[#ffd400] transition hover:text-white"
-            >
-              {t("viewFullRoster")}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
           </div>
 
           <div className="mt-10">
-            <AthleteDirectory athletes={athletes} categories={categories} />
+            <AthleteDirectory
+              athletes={athletes}
+              categories={categories}
+              initialLimit={10}
+            />
           </div>
         </div>
       </section>

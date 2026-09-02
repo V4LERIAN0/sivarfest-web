@@ -25,6 +25,7 @@
   },
   "Auth": {
     "email": "Email",
+    "emailPlaceholder": "name@sivarfest.fit",
     "password": "Password",
     "passwordPlaceholder": "Your password",
     "signIn": "Sign in",
@@ -32,8 +33,10 @@
     "invalidCredentials": "Invalid email or password.",
     "signOut": "Sign out",
     "signingOut": "Signing out...",
-    "portalAccess": "Competition access",
-    "description": "Admins manage the competition, and judges can review their event-day assignments."
+    "portalAccess": "SIVARFEST access",
+    "description": "Sign in with your assigned credentials to access your competition space.",
+    "welcomeTitle": "Your competition starts here.",
+    "welcomeDescription": "Athletes, judges, and organizers: everything you need for SIVARFEST competition day, all in one place."
   },
   "Competitions": {
   "publicHome": {
@@ -66,6 +69,8 @@
     "emptyRosterTitle": "Roster coming soon",
     "emptyRosterDescription": "We’re getting the SC and RX lineup ready.",
     "athleteCount": "{count, plural, one {# athlete} other {# athletes}}",
+    "showAllAthletes": "View all {count} athletes",
+    "showFewerAthletes": "Show only {count}",
     "gender": {
       "FEMALE": "Women",
       "MALE": "Men",
@@ -87,7 +92,7 @@
     "instagramEyebrow": "Follow the action",
     "instagramTitle": "See what’s next first on Instagram.",
     "instagramDescription": "WODs, schedules, athletes, and every update on the road to September 19.",
-    "instagramCta": "Follow sivarfest5.0",
+    "instagramCta": "Follow @sivarfest5.0",
     "venueEyebrow": "The venue",
     "venueTitle": "Built for an unforgettable floor.",
     "venueDescription": "SIVARFEST arrives at Centro Histórico de San Salvador on September 19.",
@@ -104,7 +109,9 @@
   "Athletes": {
   "publicList": {
     "eyebrow": "Competitors",
-    "title": "Athletes",
+    "title": "Official roster",
+    "description": "Meet the SC and RX athletes taking the SIVARFEST floor.",
+    "total": "{count, plural, one {# confirmed athlete} other {# confirmed athletes}}",
     "countryTba": "Country TBA",
     "independentAthlete": "Independent athlete",
     "emptyTitle": "No athletes available",
@@ -128,7 +135,8 @@
     },
     "publicList": {
       "eyebrow": "Workouts",
-      "title": "Events",
+      "title": "Official events",
+      "description": "Review each test, its instructions, and the official results as soon as they are released.",
       "event": "Event {eventCode}",
       "timeCap": "Time cap: {duration}",
       "seconds": "{seconds, plural, one {# second} other {# seconds}}",
@@ -137,6 +145,7 @@
       "workout": "Workout",
       "standards": "Standards",
       "viewResults": "View results →",
+      "viewSchedule": "View heat schedule",
       "resultsNotReleased": "Results not released",
       "emptyTitle": "No events available",
       "emptyDescription": "The next SIVARFEST tests will be revealed soon."
@@ -156,6 +165,7 @@
     "eyebrow": "Competition day",
     "title": "Heat schedule",
     "description": "Find your event, heat time, and assigned lane or station.",
+    "viewEvents": "View events",
     "event": "Event {eventCode}",
     "heatCount": "{count, plural, one {# heat} other {# heats}}",
     "timeTba": "Time TBA",
