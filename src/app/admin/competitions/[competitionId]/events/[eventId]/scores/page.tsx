@@ -155,6 +155,17 @@ export default async function AdminEventScoresPage({
                 <tbody>
                   {category.rows.map((row) => {
                     const score = scoreByAthleteId.get(row.athleteId);
+                    const categoryConfiguration = event.categoryConfigurations.find(
+                      (configuration) => configuration.categoryId === row.categoryId,
+                    );
+                    const effectiveEvent = {
+                      ...event,
+                      timeCapSeconds:
+                        categoryConfiguration?.timeCapSeconds ?? event.timeCapSeconds,
+                      cappedScoringEnabled:
+                        categoryConfiguration?.cappedScoringEnabled ??
+                        event.cappedScoringEnabled,
+                    };
                     const position = positionByAthleteId.get(
                       row.athleteId
                     );
@@ -193,7 +204,7 @@ export default async function AdminEventScoresPage({
   <ScoreEntryForm
     competitionId={competitionIdNumber}
     athleteId={row.athleteId}
-    event={event}
+    event={effectiveEvent}
     score={score}
     scoreDisplay={row.scoreDisplay}
   />
