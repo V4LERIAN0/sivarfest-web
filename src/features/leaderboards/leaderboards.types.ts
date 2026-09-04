@@ -17,6 +17,7 @@ export interface EventLeaderboardRow {
   rank: number | null;
   placementPoints: number | null;
   tied: boolean;
+  eventId: number;
   athleteId: number;
   athleteName: string;
   bibNumber: string | null;

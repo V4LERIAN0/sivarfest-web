@@ -1,9 +1,7 @@
 import {
   ArrowRight,
   CalendarClock,
-  Clock3,
   Dumbbell,
-  ListChecks,
   Trophy,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -11,6 +9,7 @@ import { getTranslations } from "next-intl/server";
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
 import { PublicPageFooter } from "@/components/public/PublicPageFooter";
 import { PublicPageHeader } from "@/components/public/PublicPageHeader";
+import { EventVariationPanel } from "@/components/public/EventVariationPanel";
 import { getPublicEvents } from "@/features/events/events.api";
 import type { ScoreType } from "@/features/events/events.types";
 import { Link } from "@/i18n/navigation";
@@ -82,24 +81,6 @@ export default async function EventsPage() {
           ) : (
             <div className="space-y-5">
               {orderedEvents.map((event, index) => {
-                let timeCap: string | null = null;
-
-                if (event.timeCapSeconds) {
-                  const minutes = Math.floor(event.timeCapSeconds / 60);
-                  const seconds = event.timeCapSeconds % 60;
-
-                  if (minutes === 0) {
-                    timeCap = t("publicList.seconds", { seconds });
-                  } else if (seconds === 0) {
-                    timeCap = t("publicList.minutes", { minutes });
-                  } else {
-                    timeCap = t("publicList.minutesAndSeconds", {
-                      minutes,
-                      seconds,
-                    });
-                  }
-                }
-
                 return (
                   <article
                     key={event.id}
@@ -123,53 +104,13 @@ export default async function EventsPage() {
                           <span className="border border-[#ffd400]/30 bg-[#ffd400]/10 px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-[#ffe45c]">
                             {t(scoreTypeMessageKeys[event.scoreType])}
                           </span>
-                          {timeCap && (
-                            <span className="inline-flex items-center gap-1.5 border border-white/15 px-3 py-1 text-xs font-bold text-white/55">
-                              <Clock3 className="h-3.5 w-3.5" aria-hidden="true" />
-                              {t("publicList.timeCap", {
-                                duration: timeCap,
-                              })}
-                            </span>
-                          )}
                         </div>
 
                         <h2 className="sivar-display mt-5 text-4xl leading-none text-[#f2f0eb] sm:text-5xl">
                           {event.name}
                         </h2>
 
-                        {event.description && (
-                          <p className="mt-4 max-w-3xl text-base leading-7 text-white/60">
-                            {event.description}
-                          </p>
-                        )}
-
-                        {(event.workoutInstructions || event.movementStandards) && (
-                          <div className="mt-8 grid gap-4 xl:grid-cols-2">
-                            {event.workoutInstructions && (
-                              <section className="border border-white/10 bg-black/35 p-5">
-                                <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-[#ffd400]">
-                                  <Dumbbell className="h-4 w-4" aria-hidden="true" />
-                                  {t("publicList.workout")}
-                                </h3>
-                                <p className="mt-4 whitespace-pre-line text-sm leading-7 text-white/70 sm:text-base">
-                                  {event.workoutInstructions}
-                                </p>
-                              </section>
-                            )}
-
-                            {event.movementStandards && (
-                              <section className="border border-white/10 bg-black/35 p-5">
-                                <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-[#ffd400]">
-                                  <ListChecks className="h-4 w-4" aria-hidden="true" />
-                                  {t("publicList.standards")}
-                                </h3>
-                                <p className="mt-4 whitespace-pre-line text-sm leading-7 text-white/70 sm:text-base">
-                                  {event.movementStandards}
-                                </p>
-                              </section>
-                            )}
-                          </div>
-                        )}
+                        <EventVariationPanel event={event} />
 
                         <div className="mt-8 flex justify-end border-t border-white/10 pt-5">
                           {event.scoreVisible && event.status !== "DRAFT" ? (

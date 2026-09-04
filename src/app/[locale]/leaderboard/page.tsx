@@ -289,8 +289,10 @@ export default async function OverallLeaderboardPage() {
                             </div>
 
                             <div className="mt-4 grid grid-cols-2 gap-2">
-                              {orderedEvents.map((event, eventIndex) => {
-                                const result = row.eventResults[eventIndex];
+                              {orderedEvents.map((event) => {
+                                const result = row.eventResults.find(
+                                  (entry) => entry.eventId === event.eventId,
+                                );
 
                                 return (
                                   <Link
@@ -305,7 +307,7 @@ export default async function OverallLeaderboardPage() {
                                     </span>
                                     <span className="mt-1 block font-mono text-sm font-bold text-white/80">
                                       {result?.scoreDisplay ??
-                                        t("overall.noScore")}
+                                        t("overall.notEligible")}
                                     </span>
                                   </Link>
                                 );
@@ -392,8 +394,10 @@ export default async function OverallLeaderboardPage() {
                                     </p>
                                   )}
                                 </td>
-                                {orderedEvents.map((event, eventIndex) => {
-                                  const result = row.eventResults[eventIndex];
+                                {orderedEvents.map((event) => {
+                                  const result = row.eventResults.find(
+                                    (entry) => entry.eventId === event.eventId,
+                                  );
                                   const resultRank = result?.rank;
                                   const placementPoints =
                                     result?.placementPoints;
@@ -410,22 +414,22 @@ export default async function OverallLeaderboardPage() {
                                     >
                                       <p className="font-mono font-bold text-white/85">
                                         {result?.scoreDisplay ??
-                                          t("overall.noScore")}
+                                          t("overall.notEligible")}
                                       </p>
                                       {hasPlacement ? (
                                         <p className="mt-1 text-xs text-white/35">
-                                          {result.tied &&
+                                          {result?.tied &&
                                             t("overall.tiedAbbreviation")}
                                           {t("overall.placementPoints", {
                                             rank: resultRank,
                                             points: placementPoints,
                                           })}
                                         </p>
-                                      ) : (
+                                      ) : result ? (
                                         <p className="mt-1 text-xs text-white/25">
                                           {t("overall.unscored")}
                                         </p>
-                                      )}
+                                      ) : null}
                                     </td>
                                   );
                                 })}

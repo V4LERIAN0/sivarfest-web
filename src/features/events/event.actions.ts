@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminEvent, hideAdminEvent, updateAdminEvent } from "./events.api";
-import { EventCreateRequest, EventFormState, EventStatus, RankingDirection, ScoreType, TiebreakType, WeightUnit } from "./events.types";
+import { EventCategoryConfigRequest, EventCreateRequest, EventEligibilityMode, EventFormState, EventStatus, RankingDirection, ScoreType, TiebreakType, WeightUnit } from "./events.types";
 
 const text = (value: FormDataEntryValue | null) => value?.toString().trim() || undefined;
 const number = (value: FormDataEntryValue | null) => {
@@ -12,6 +12,23 @@ const number = (value: FormDataEntryValue | null) => {
 };
 
 function request(formData: FormData): EventCreateRequest {
+  const categoryConfigurations: EventCategoryConfigRequest[] = formData
+    .getAll("configuredCategoryId")
+    .map((value) => Number(value))
+    .filter(Number.isFinite)
+    .map((categoryId) => ({
+      categoryId,
+      variantLabel: text(formData.get(`category-${categoryId}-variantLabel`)),
+      description: text(formData.get(`category-${categoryId}-description`)),
+      workoutInstructions: text(formData.get(`category-${categoryId}-workoutInstructions`)),
+      movementStandards: text(formData.get(`category-${categoryId}-movementStandards`)),
+      timeCapSeconds: number(formData.get(`category-${categoryId}-timeCapSeconds`)),
+      totalReps: number(formData.get(`category-${categoryId}-totalReps`)),
+      repsPerRound: number(formData.get(`category-${categoryId}-repsPerRound`)),
+      cappedScoringEnabled:
+        formData.get(`category-${categoryId}-cappedScoringEnabled`) === "on",
+    }));
+
   return {
     eventCode: text(formData.get("eventCode")) ?? "",
     name: text(formData.get("name")) ?? "",
@@ -35,6 +52,14 @@ function request(formData: FormData): EventCreateRequest {
     publicVisible: formData.get("publicVisible") === "on",
     scoreVisible: formData.get("scoreVisible") === "on",
     status: (formData.get("status") as EventStatus) ?? "DRAFT",
+    eligibilityMode:
+      (formData.get("eligibilityMode") as EventEligibilityMode) ??
+      "ALL_ACTIVE",
+    eligibleAthleteIds: formData
+      .getAll("eligibleAthleteIds")
+      .map((value) => Number(value))
+      .filter(Number.isFinite),
+    categoryConfigurations,
   };
 }
 

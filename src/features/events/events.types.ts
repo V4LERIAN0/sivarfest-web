@@ -10,6 +10,7 @@ export type ScoreType =
 export type RankingDirection = "LOWER_IS_BETTER" | "HIGHER_IS_BETTER";
 export type TiebreakType = "NONE" | "TIME" | "REPS" | "WEIGHT" | "POINTS" | "CUSTOM_NUMERIC";
 export type WeightUnit = "POUNDS" | "KILOGRAMS";
+export type EventEligibilityMode = "ALL_ACTIVE" | "EXPLICIT";
 
 export type EventStatus =
   | "DRAFT"
@@ -18,6 +19,51 @@ export type EventStatus =
   | "COMPLETED"
   | "SCORES_PUBLISHED"
   | "SCORES_LOCKED";
+
+export interface EventVariationPublicResponse {
+  categoryId: number;
+  categoryName: string;
+  genderClassification: string;
+  divisionLabel: string | null;
+  displayOrder: number;
+  label: string;
+  description: string | null;
+  workoutInstructions: string | null;
+  movementStandards: string | null;
+  timeCapSeconds: number | null;
+  totalReps: number | null;
+  repsPerRound: number | null;
+  cappedScoringEnabled: boolean;
+}
+
+export interface EventCategoryConfigRequest {
+  categoryId: number;
+  variantLabel?: string | null;
+  description?: string | null;
+  workoutInstructions?: string | null;
+  movementStandards?: string | null;
+  timeCapSeconds?: number | null;
+  totalReps?: number | null;
+  repsPerRound?: number | null;
+  cappedScoringEnabled?: boolean | null;
+}
+
+export interface EventCategoryConfigResponse
+  extends EventCategoryConfigRequest {
+  id: number;
+  categoryName: string;
+  genderClassification: string;
+  divisionLabel: string | null;
+  categoryDisplayOrder: number;
+  variantLabel: string | null;
+  description: string | null;
+  workoutInstructions: string | null;
+  movementStandards: string | null;
+  timeCapSeconds: number | null;
+  totalReps: number | null;
+  repsPerRound: number | null;
+  cappedScoringEnabled: boolean | null;
+}
 
 export interface EventPublicResponse {
   id: number;
@@ -43,11 +89,15 @@ export interface EventPublicResponse {
   displayOrder: number;
   scoreVisible: boolean;
   status: EventStatus;
+  eligibilityMode: EventEligibilityMode;
+  variations: EventVariationPublicResponse[];
 }
 
 export interface EventResponse extends EventPublicResponse {
   competitionName: string;
   publicVisible: boolean;
+  eligibleAthleteIds: number[];
+  categoryConfigurations: EventCategoryConfigResponse[];
   createdAt: string;
   updatedAt: string;
 }
@@ -75,6 +125,9 @@ export interface EventCreateRequest {
   publicVisible: boolean;
   scoreVisible: boolean;
   status: EventStatus;
+  eligibilityMode: EventEligibilityMode;
+  eligibleAthleteIds: number[];
+  categoryConfigurations: EventCategoryConfigRequest[];
 }
 
 export type EventUpdateRequest = EventCreateRequest;
