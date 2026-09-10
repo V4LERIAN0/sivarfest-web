@@ -2,7 +2,8 @@
 
 import { AthleteAdminResponse } from "@/features/athletes/athletes.types";
 import { CategoryResponse } from "@/features/categories/categories.types";
-import { useActionState } from "react";
+import { EventResponse } from "@/features/events/events.types";
+import { useActionState, useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
 import {
   assignAthleteAction,
@@ -105,29 +106,75 @@ export function GenerateHeatsForm({
   competitionId,
   eventId,
   categories,
+  events,
+  currentEventDisplayOrder,
+  athletes,
   nextHeatNumber,
 }: {
   competitionId: number;
   eventId: number;
   categories: CategoryResponse[];
+  events: EventResponse[];
+  currentEventDisplayOrder: number;
+  athletes: AthleteAdminResponse[];
   nextHeatNumber: number;
 }) {
+  const activeCategories = useMemo(
+    () =>
+      categories
+        .filter((category) => category.active)
+        .toSorted(
+          (left, right) =>
+            left.displayOrder - right.displayOrder ||
+            left.name.localeCompare(right.name)
+        ),
+    [categories]
+  );
+  const previousEvents = useMemo(
+    () =>
+      events
+        .filter(
+          (candidate) =>
+            candidate.id !== eventId &&
+            candidate.displayOrder < currentEventDisplayOrder
+        )
+        .toSorted((left, right) => right.displayOrder - left.displayOrder),
+    [currentEventDisplayOrder, eventId, events]
+  );
+  const [seedingMode, setSeedingMode] = useState("RANDOM");
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<Set<number>>(
+    () => new Set(activeCategories.map((category) => category.id))
+  );
   const [state, action] = useActionState(
     generateHeatsAction.bind(null, competitionId, eventId),
     { error: null }
   );
+
+  const toggleCategory = (categoryId: number, selected: boolean) => {
+    setSelectedCategoryIds((current) => {
+      const next = new Set(current);
+      if (selected) next.add(categoryId);
+      else next.delete(categoryId);
+      return next;
+    });
+  };
+
   return (
     <form action={action} className="grid gap-4 md:grid-cols-2">
-      <Field label="Category">
-        <select name="categoryId" defaultValue="" className={field}>
-          <option value="">All categories</option>
-          {categories
-            .filter((category) => category.active)
-            .map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
+      <p className="text-sm leading-6 text-slate-400 md:col-span-2">
+        Every selected category is generated as its own block. Athletes from
+        different categories are never placed in the same heat.
+      </p>
+      <Field label="Seeding">
+        <select
+          name="seedingMode"
+          value={seedingMode}
+          onChange={(event) => setSeedingMode(event.target.value)}
+          className={field}
+        >
+          <option value="RANDOM">Random within each category</option>
+          <option value="EVENT_STANDINGS">Previous event standings</option>
+          <option value="OVERALL_STANDINGS">Current overall standings</option>
         </select>
       </Field>
       <Field label="Athletes per heat">
@@ -135,7 +182,7 @@ export function GenerateHeatsForm({
           name="capacity"
           type="number"
           min={1}
-          defaultValue={4}
+          defaultValue={10}
           required
           className={field}
         />
@@ -149,10 +196,7 @@ export function GenerateHeatsForm({
           className={field}
         />
       </Field>
-      <Field label="First heat time">
-        <input name="firstHeatTime" type="datetime-local" className={field} />
-      </Field>
-      <Field label="Minutes between heats">
+      <Field label="Start-to-start interval (minutes)">
         <input
           name="minutesBetweenHeats"
           type="number"
@@ -161,9 +205,82 @@ export function GenerateHeatsForm({
           className={field}
         />
       </Field>
-      <Field label="Random seed (optional)">
-        <input name="randomSeed" type="number" className={field} />
-      </Field>
+      {seedingMode === "RANDOM" ? (
+        <Field label="Random seed (optional)">
+          <input name="randomSeed" type="number" className={field} />
+        </Field>
+      ) : seedingMode === "EVENT_STANDINGS" ? (
+        <Field label="Source event">
+          <select
+            name="sourceEventId"
+            defaultValue={previousEvents[0]?.id ?? ""}
+            required
+            className={field}
+          >
+            <option value="" disabled>
+              Choose the completed event
+            </option>
+            {previousEvents.map((candidate) => (
+              <option key={candidate.id} value={candidate.id}>
+                {candidate.eventCode} · {candidate.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+      ) : (
+        <p className="mt-7 text-sm leading-6 text-slate-400">
+          Highest-ranked eligible athletes will be placed in the last heat of
+          each category.
+        </p>
+      )}
+
+      <fieldset className="space-y-3 rounded-xl border border-slate-800 p-4 md:col-span-2">
+        <legend className="px-2 text-sm font-black text-slate-200">
+          Categories and first start times
+        </legend>
+        <div className="grid gap-3">
+          {activeCategories.map((category) => {
+            const athleteCount = athletes.filter(
+              (athlete) => athlete.categoryId === category.id
+            ).length;
+            const selected = selectedCategoryIds.has(category.id);
+            return (
+              <div
+                key={category.id}
+                className="grid gap-3 rounded-xl border border-slate-800 bg-slate-950/50 p-3 sm:grid-cols-[minmax(0,1fr)_minmax(13rem,0.8fr)] sm:items-end"
+              >
+                <label className="flex items-start gap-3 text-sm font-bold text-slate-200">
+                  <input
+                    name="categoryId"
+                    type="checkbox"
+                    value={category.id}
+                    checked={selected}
+                    onChange={(event) =>
+                      toggleCategory(category.id, event.target.checked)
+                    }
+                    className="mt-1 size-4 accent-orange-500"
+                  />
+                  <span>
+                    {category.name}
+                    <span className="mt-1 block text-xs font-normal text-slate-500">
+                      {athleteCount} eligible athletes
+                    </span>
+                  </span>
+                </label>
+                <label className="text-xs font-bold text-slate-400">
+                  First heat time
+                  <input
+                    name={`category-${category.id}-firstHeatTime`}
+                    type="datetime-local"
+                    disabled={!selected}
+                    className={field}
+                  />
+                </label>
+              </div>
+            );
+          })}
+        </div>
+      </fieldset>
       <label className="flex items-center gap-3 text-sm font-bold">
         <input
           name="publicVisible"
@@ -175,7 +292,7 @@ export function GenerateHeatsForm({
       </label>
       <Feedback state={state} />
       <div className="md:col-span-2">
-        <Submit label="Generate random heats" />
+        <Submit label="Generate category-separated heats" />
       </div>
     </form>
   );

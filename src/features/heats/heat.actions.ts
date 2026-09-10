@@ -66,20 +66,38 @@ export async function generateHeatsAction(
   formData: FormData
 ): Promise<HeatFormState> {
   try {
+    const categoryIds = formData
+      .getAll("categoryId")
+      .map((value) => Number(value))
+      .filter((value) => Number.isFinite(value));
+    if (categoryIds.length === 0) {
+      return { error: "Select at least one category." };
+    }
     await generateAdminHeats(eventId, {
-      categoryId: numeric(formData.get("categoryId")),
+      seedingMode:
+        (text(formData.get("seedingMode")) as
+          | "RANDOM"
+          | "EVENT_STANDINGS"
+          | "OVERALL_STANDINGS") ?? "RANDOM",
+      categorySchedules: categoryIds.map((categoryId) => ({
+        categoryId,
+        firstHeatTime: text(
+          formData.get(`category-${categoryId}-firstHeatTime`)
+        ),
+      })),
       capacity: numeric(formData.get("capacity")) ?? 1,
       startingHeatNumber: numeric(formData.get("startingHeatNumber")),
-      firstHeatTime: text(formData.get("firstHeatTime")),
-      minutesBetweenHeats: numeric(formData.get("minutesBetweenHeats")),
+      minutesBetweenHeats:
+        numeric(formData.get("minutesBetweenHeats")) ?? 1,
       publicVisible: checked(formData, "publicVisible"),
       randomSeed: numeric(formData.get("randomSeed")),
+      sourceEventId: numeric(formData.get("sourceEventId")),
     });
   } catch (error) {
     return { error: errorMessage(error) };
   }
   revalidatePath(path(competitionId, eventId));
-  return { error: null, success: "Random heats generated." };
+  return { error: null, success: "Category-separated heats generated." };
 }
 
 export async function assignAthleteAction(

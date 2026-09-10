@@ -70,14 +70,25 @@ export interface HeatAssignmentRequest {
   allowCapacityOverride: boolean;
 }
 
-export interface GenerateRandomHeatsRequest {
-  categoryId?: number;
+export type HeatSeedingMode =
+  | "RANDOM"
+  | "EVENT_STANDINGS"
+  | "OVERALL_STANDINGS";
+
+export interface HeatCategoryScheduleRequest {
+  categoryId: number;
+  firstHeatTime?: string;
+}
+
+export interface GenerateHeatsRequest {
+  seedingMode: HeatSeedingMode;
+  categorySchedules: HeatCategoryScheduleRequest[];
   capacity: number;
   startingHeatNumber?: number;
-  firstHeatTime?: string;
-  minutesBetweenHeats?: number;
+  minutesBetweenHeats: number;
   publicVisible: boolean;
   randomSeed?: number;
+  sourceEventId?: number;
 }
 
 export interface HeatFormState {
