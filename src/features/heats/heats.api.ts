@@ -6,7 +6,7 @@ import {
   serverApiPut,
 } from "@/lib/server-api-client";
 import {
-  GenerateRandomHeatsRequest,
+  GenerateHeatsRequest,
   HeatAssignmentRequest,
   HeatCreateRequest,
   HeatResponse,
@@ -68,10 +68,10 @@ export function removeAdminAssignment(assignmentId: number) {
 
 export function generateAdminHeats(
   eventId: number,
-  request: GenerateRandomHeatsRequest
+  request: GenerateHeatsRequest
 ) {
-  return serverApiPost<HeatResponse[], GenerateRandomHeatsRequest>(
-    `/admin/events/${eventId}/heats/generate-random`,
+  return serverApiPost<HeatResponse[], GenerateHeatsRequest>(
+    `/admin/events/${eventId}/heats/generate`,
     request
   );
 }

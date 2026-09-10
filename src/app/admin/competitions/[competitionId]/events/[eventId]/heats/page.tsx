@@ -1,7 +1,7 @@
 import { getAdminAthletes } from "@/features/athletes/athletes.api";
 import { getAdminCategories } from "@/features/categories/categories.api";
 import { getAdminCompetitionById } from "@/features/competitions/competitions.api";
-import { getAdminEvent } from "@/features/events/events.api";
+import { getAdminEvent, getAdminEvents } from "@/features/events/events.api";
 import {
   cancelHeatAction,
   removeAssignmentAction,
@@ -29,9 +29,10 @@ export default async function AdminHeatsPage({
   const route = await params;
   const competitionId = Number(route.competitionId);
   const eventId = Number(route.eventId);
-  const [competition, event, heats, athletes, categories] = await Promise.all([
+  const [competition, event, events, heats, athletes, categories] = await Promise.all([
     getAdminCompetitionById(competitionId),
     getAdminEvent(eventId),
+    getAdminEvents(competitionId),
     getAdminHeats(eventId),
     getAdminAthletes(competitionId),
     getAdminCategories(competitionId),
@@ -82,11 +83,14 @@ export default async function AdminHeatsPage({
             nextHeatNumber={maxNumber + 1}
           />
         </Panel>
-        <Panel title="Random generation">
+        <Panel title="Category heat generation">
           <GenerateHeatsForm
             competitionId={competitionId}
             eventId={eventId}
             categories={categories}
+            events={events}
+            currentEventDisplayOrder={event.displayOrder}
+            athletes={eligibleAthletes}
             nextHeatNumber={maxNumber + 1}
           />
         </Panel>
@@ -109,6 +113,7 @@ export default async function AdminHeatsPage({
 
       <div className="mt-5 space-y-6">
         {activeHeats.map((heat) => {
+          const heatCategory = heat.assignments[0];
           const usedLanes = new Set(
             heat.assignments.map((assignment) => assignment.positionNumber)
           );
@@ -126,6 +131,9 @@ export default async function AdminHeatsPage({
                     <Tag>{heat.status.replaceAll("_", " ")}</Tag>
                     <Tag>
                       {heat.assignedCount}/{heat.capacity} athletes
+                    </Tag>
+                    <Tag>
+                      {heatCategory?.categoryName ?? "Unassigned category"}
                     </Tag>
                     {!heat.publicVisible && <Tag>Private</Tag>}
                   </div>
@@ -250,7 +258,14 @@ export default async function AdminHeatsPage({
                   competitionId={competitionId}
                   eventId={eventId}
                   heatId={heat.id}
-                  athletes={eligibleAthletes}
+                  athletes={
+                    heatCategory
+                      ? eligibleAthletes.filter(
+                          (athlete) =>
+                            athlete.categoryId === heatCategory.categoryId
+                        )
+                      : eligibleAthletes
+                  }
                   nextPosition={nextLane}
                 />
               </div>
