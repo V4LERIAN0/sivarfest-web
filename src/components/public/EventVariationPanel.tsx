@@ -117,19 +117,9 @@ export function EventVariationPanel({ event }: { event: EventPublicResponse }) {
           </div>
 
           {description && (
-            <CollapsibleSection
-              defaultOpen
-              className="mt-4"
-              title={
-                <h3 className="text-sm font-black text-[#ffd400]">
-                  {t("descriptionLabel")}
-                </h3>
-              }
-            >
-              <p className="max-w-3xl px-5 py-4 text-base leading-7 text-white/60">
-                {description}
-              </p>
-            </CollapsibleSection>
+            <p className="mt-4 max-w-3xl text-base leading-7 text-white/60">
+              {description}
+            </p>
           )}
 
           {(workoutInstructions || movementStandards) && (
