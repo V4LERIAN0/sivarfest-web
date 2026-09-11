@@ -1,4 +1,5 @@
-import { Activity, ArrowRight, Medal, Trophy, Users } from "lucide-react";
+import { CollapsibleSection } from "@/components/public/CollapsibleSection";
+import { Activity, ArrowRight, Trophy, Users } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
@@ -61,11 +62,7 @@ function rankClassName(rank: number | null) {
 }
 
 function athleteDetails(row: OverallLeaderboardRow) {
-  return [
-    row.bibNumber ? `#${row.bibNumber}` : null,
-    row.country,
-    row.gymName,
-  ]
+  return [row.bibNumber ? `#${row.bibNumber}` : null, row.country, row.gymName]
     .filter(Boolean)
     .join(" · ");
 }
@@ -77,12 +74,12 @@ export default async function OverallLeaderboardPage() {
     getFormatter(),
   ]);
   const orderedEvents = [...leaderboard.events].sort(
-    (first, second) => first.displayOrder - second.displayOrder
+    (first, second) => first.displayOrder - second.displayOrder,
   );
   const rankedAthletes = leaderboard.categories.reduce(
     (total, category) =>
       total + category.rows.filter((row) => row.rank !== null).length,
-    0
+    0,
   );
   const updatedLabel = leaderboard.lastUpdatedAt
     ? t("overall.updated", {
@@ -99,7 +96,10 @@ export default async function OverallLeaderboardPage() {
       <PublicNavbar />
 
       <header className="relative overflow-hidden border-b border-white/10 px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-        <div className="sivar-grid absolute inset-0 opacity-30" aria-hidden="true" />
+        <div
+          className="sivar-grid absolute inset-0 opacity-30"
+          aria-hidden="true"
+        />
         <div
           className="absolute -right-20 -top-32 h-80 w-80 bg-[#ff5a00]/12 blur-[110px]"
           aria-hidden="true"
@@ -128,7 +128,7 @@ export default async function OverallLeaderboardPage() {
             <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap lg:max-w-md lg:justify-end">
               <span
                 className={`col-span-2 inline-flex min-h-11 items-center justify-center border px-4 py-2 text-xs font-black uppercase tracking-[0.1em] sm:col-span-1 ${statusClassName(
-                  leaderboard.status
+                  leaderboard.status,
                 )}`}
               >
                 {t(statusMessageKeys[leaderboard.status])}
@@ -221,11 +221,11 @@ export default async function OverallLeaderboardPage() {
 
               <div className="mt-7 space-y-10">
                 {leaderboard.categories.map((category) => (
-                  <section
+                  <CollapsibleSection
                     key={category.categoryId}
-                    className="overflow-hidden border border-white/12 bg-[#0b0b0b]"
-                  >
-                    <header className="flex flex-col gap-3 border-b border-white/10 bg-white/[0.025] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+                    id={`category-${category.categoryId}`}
+                    categoryId={category.categoryId}
+                    title={
                       <div>
                         <h3 className="sivar-display text-3xl text-[#f2f0eb] sm:text-4xl">
                           {category.categoryName}
@@ -239,12 +239,8 @@ export default async function OverallLeaderboardPage() {
                             .join(" · ")}
                         </p>
                       </div>
-                      <Medal
-                        className="h-5 w-5 text-[#ffd400]"
-                        aria-hidden="true"
-                      />
-                    </header>
-
+                    }
+                  >
                     <div className="divide-y divide-white/8 md:hidden">
                       {category.rows.map((row) => {
                         const details = athleteDetails(row);
@@ -254,7 +250,7 @@ export default async function OverallLeaderboardPage() {
                             <div className="grid grid-cols-[3rem_minmax(0,1fr)_auto] items-center gap-3">
                               <span
                                 className={`flex h-11 w-11 items-center justify-center border text-base font-black ${rankClassName(
-                                  row.rank
+                                  row.rank,
                                 )}`}
                               >
                                 {row.rank === null ? (
@@ -268,7 +264,12 @@ export default async function OverallLeaderboardPage() {
                               </span>
                               <div className="min-w-0">
                                 <h4 className="truncate text-base font-black text-white">
-                                  {row.athleteName}
+                                  <Link
+                                    href={`/athletes/${row.athleteId}`}
+                                    className="hover:text-[#ffd400] focus-visible:outline-2 focus-visible:outline-[#ffd400]"
+                                  >
+                                    {row.athleteName}
+                                  </Link>
                                 </h4>
                                 {details && (
                                   <p className="mt-1 truncate text-xs text-white/40">
@@ -370,7 +371,7 @@ export default async function OverallLeaderboardPage() {
                                 <td className="px-5 py-4">
                                   <span
                                     className={`flex h-10 min-w-10 items-center justify-center border px-2 text-sm font-black ${rankClassName(
-                                      row.rank
+                                      row.rank,
                                     )}`}
                                   >
                                     {row.rank === null ? (
@@ -386,7 +387,12 @@ export default async function OverallLeaderboardPage() {
                                 </td>
                                 <td className="px-5 py-4">
                                   <p className="font-black text-white">
-                                    {row.athleteName}
+                                    <Link
+                                      href={`/athletes/${row.athleteId}`}
+                                      className="hover:text-[#ffd400] focus-visible:outline-2 focus-visible:outline-[#ffd400]"
+                                    >
+                                      {row.athleteName}
+                                    </Link>
                                   </p>
                                   {details && (
                                     <p className="mt-1 text-xs text-white/35">
@@ -463,7 +469,7 @@ export default async function OverallLeaderboardPage() {
                         </tbody>
                       </table>
                     </div>
-                  </section>
+                  </CollapsibleSection>
                 ))}
 
                 {leaderboard.categories.length === 0 && (

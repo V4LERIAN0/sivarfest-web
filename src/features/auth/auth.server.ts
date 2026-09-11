@@ -42,6 +42,7 @@ export async function requireAdminServer() {
     redirect("/login");
   }
 
+  if (user.mustChangePassword) redirect("/es/change-password");
   return user;
 }
 
@@ -52,5 +53,17 @@ export async function requireJudgeServer(loginPath = "/login") {
     redirect(loginPath);
   }
 
+  if (user.mustChangePassword)
+    redirect(
+      loginPath === "/login"
+        ? "/es/change-password"
+        : loginPath.replace(/login$/, "change-password"),
+    );
+  return user;
+}
+export async function requireAthleteServer(locale: string) {
+  const user = await getCurrentUserServer();
+  if (!user || user.role !== "ATHLETE") redirect(`/${locale}/login`);
+  if (user.mustChangePassword) redirect(`/${locale}/change-password`);
   return user;
 }

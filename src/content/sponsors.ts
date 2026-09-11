@@ -28,7 +28,7 @@ export const sponsors: Sponsor[] = [
   {
     name: "G-SHOCK",
     instagramUrl: "https://www.instagram.com/gshockamericalatina/",
-    logoSrc: "/sponsors/gshock.png",
+    logoSrc: "/sponsors/gshock.jpeg",
   },
   {
     name: "Nutricenter",
@@ -54,5 +54,25 @@ export const sponsors: Sponsor[] = [
     name: "Ananda",
     instagramUrl: "https://www.instagram.com/anandaelsalvador/",
     logoSrc: "/sponsors/ananda.png",
+  },
+  {
+    name: "Analiza",
+    instagramUrl: "https://www.instagram.com/analizafisioterapia.sv/",
+    logoSrc: "/sponsors/analiza.png",
+  },
+  {
+    name: "Señorial",
+    instagramUrl: "https://www.instagram.com/senorial.snacks/",
+    logoSrc: "/sponsors/seniorial.png",
+  },
+  {
+    name: "Incaparina",
+    instagramUrl: "https://www.instagram.com/incaparina_oficial/",
+    logoSrc: "/sponsors/incaparina.png",
+  },
+  {
+    name: "Pro",
+    instagramUrl: "https://www.instagram.com/productos_prosnacks/",
+    logoSrc: "/sponsors/pro.png",
   },
 ];

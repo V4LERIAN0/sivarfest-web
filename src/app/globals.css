@@ -161,6 +161,15 @@ body {
   line-height: 1.04;
 }
 
+.sivar-disclosure > summary::-webkit-details-marker,
+.sivar-account-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.sivar-disclosure[open] > summary .sivar-disclosure-chevron {
+  transform: rotate(180deg);
+}
+
 .sivar-kicker {
   color: #ffd400;
   font-size: 0.75rem;

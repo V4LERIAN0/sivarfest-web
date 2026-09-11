@@ -1,12 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import { AtSign } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { LocaleSwitcher } from "@/components/layout/LocaleSwitcher";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+
+import { AthleteAccountMenu } from "@/components/layout/AthleteAccountMenu";
 
 type PublicNavbarProps = {
   showLocaleSwitcher?: boolean;
+  athleteAccount?: boolean;
 };
 
 const INSTAGRAM_URL = "https://www.instagram.com/sivarfest5.0/";
@@ -28,8 +33,13 @@ const mobileNavItems = [
 
 export function PublicNavbar({
   showLocaleSwitcher = true,
+  athleteAccount = false,
 }: PublicNavbarProps) {
   const t = useTranslations("Navigation");
+  const pathname = usePathname();
+  function isActive(href: string) {
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black/92 text-white backdrop-blur-xl">
@@ -52,47 +62,56 @@ export function PublicNavbar({
 
           <nav
             aria-label={t("primary")}
-            className="hidden items-center gap-6 md:flex"
+            className="hidden items-center gap-5 lg:flex"
           >
-            {desktopNavItems.map((item) => (
+            {desktopNavItems
+              .filter((item) => !athleteAccount || item.href !== "/login")
+              .map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  className={`border-b-2 py-3 text-xs font-black uppercase tracking-[0.11em] transition hover:text-[#ffd400] ${isActive(item.href) ? "border-[#ffd400] text-[#ffd400]" : "border-transparent text-white/65"}`}
+                >
+                  {t(item.label)}
+                </Link>
+              ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            {!athleteAccount && (
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t("instagram")}
+                className="hidden h-10 w-10 items-center justify-center border border-white/15 bg-white/5 text-white/70 transition hover:border-[#ffd400]/50 hover:text-[#ffd400] sm:inline-flex"
+              >
+                <AtSign className="h-4 w-4" aria-hidden="true" />
+              </a>
+            )}
+            {showLocaleSwitcher && <LocaleSwitcher />}
+            {athleteAccount && <AthleteAccountMenu />}
+          </div>
+        </div>
+
+        {!athleteAccount && (
+          <nav
+            aria-label={t("mobilePrimary")}
+            className="grid grid-cols-4 border-t border-white/8 lg:hidden"
+          >
+            {mobileNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-xs font-black uppercase tracking-[0.11em] text-white/65 transition hover:text-[#ffd400]"
+                aria-current={isActive(item.href) ? "page" : undefined}
+                className={`border-b-2 px-1 py-3 text-center text-xs font-black uppercase tracking-[0.04em] transition hover:text-[#ffd400] ${isActive(item.href) ? "border-[#ffd400] text-[#ffd400]" : "border-transparent text-white/60"}`}
               >
                 {t(item.label)}
               </Link>
             ))}
           </nav>
-
-          <div className="flex items-center gap-2">
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t("instagram")}
-              className="hidden h-10 w-10 items-center justify-center border border-white/15 bg-white/5 text-white/70 transition hover:border-[#ffd400]/50 hover:text-[#ffd400] sm:inline-flex"
-            >
-              <AtSign className="h-4 w-4" aria-hidden="true" />
-            </a>
-            {showLocaleSwitcher && <LocaleSwitcher />}
-          </div>
-        </div>
-
-        <nav
-          aria-label={t("mobilePrimary")}
-          className="grid grid-cols-4 border-t border-white/8 py-3 md:hidden"
-        >
-          {mobileNavItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="px-1 text-center text-xs font-black uppercase tracking-[0.04em] text-white/60 transition hover:text-[#ffd400]"
-            >
-              {t(item.label)}
-            </Link>
-          ))}
-        </nav>
+        )}
       </div>
     </header>
   );

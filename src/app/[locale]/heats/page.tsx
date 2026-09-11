@@ -1,9 +1,12 @@
+import { AnnouncementList } from "@/features/announcements/AnnouncementList";
 import { CalendarClock, Clock3, Dumbbell, Trophy, Users } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
 import { PublicPageFooter } from "@/components/public/PublicPageFooter";
 import { PublicPageHeader } from "@/components/public/PublicPageHeader";
+import { CollapsibleSection } from "@/components/public/CollapsibleSection";
+import { getPublicCategories } from "@/features/categories/categories.api";
 import { getPublicHeats } from "@/features/heats/heats.api";
 import type { HeatStatus } from "@/features/heats/heats.types";
 import { Link } from "@/i18n/navigation";
@@ -42,10 +45,11 @@ function statusClassName(status: HeatStatus) {
 }
 
 export default async function PublicHeatsPage() {
-  const [heats, t, format] = await Promise.all([
+  const [heats, t, format, categories] = await Promise.all([
     getPublicHeats(),
     getTranslations("Heats"),
     getFormatter(),
+    getPublicCategories(),
   ]);
   const orderedHeats = [...heats].sort((first, second) => {
     if (first.scheduledTime && second.scheduledTime) {
@@ -69,6 +73,11 @@ export default async function PublicHeatsPage() {
   return (
     <main className="sivar-public min-h-screen bg-[#050505] text-white">
       <PublicNavbar />
+      <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6">
+        <AnnouncementList
+          path={`/public/competitions/${process.env.NEXT_PUBLIC_COMPETITION_SLUG ?? "sivarfest-2026"}/announcements`}
+        />
+      </div>
 
       <PublicPageHeader
         eyebrow={t("publicSchedule.eyebrow")}
@@ -113,6 +122,38 @@ export default async function PublicHeatsPage() {
             <div className="space-y-14">
               {[...eventGroups.values()].map((eventHeats) => {
                 const event = eventHeats[0];
+                // The public heat DTO has no category field: use the actual assignments.
+                // Empty or legacy mixed heats stay visible without inventing a division.
+                const categoryGroups = new Map<
+                  string,
+                  {
+                    name: string;
+                    categoryId?: number;
+                    order: number;
+                    heats: typeof heats;
+                  }
+                >();
+                for (const heat of eventHeats) {
+                  const ids = [
+                    ...new Set(heat.assignments.map((a) => a.categoryId)),
+                  ].sort((a, b) => a - b);
+                  const key = ids.join("-") || "pending";
+                  const categoryId = ids.length === 1 ? ids[0] : undefined;
+                  const names = [
+                    ...new Set(heat.assignments.map((a) => a.categoryName)),
+                  ];
+                  const group = categoryGroups.get(key) ?? {
+                    name:
+                      names.join(" / ") || t("publicSchedule.categoryPending"),
+                    categoryId,
+                    order:
+                      categories.find((c) => c.id === categoryId)
+                        ?.displayOrder ?? Number.MAX_SAFE_INTEGER,
+                    heats: [],
+                  };
+                  group.heats.push(heat);
+                  categoryGroups.set(key, group);
+                }
 
                 return (
                   <section key={event.eventId}>
@@ -139,87 +180,122 @@ export default async function PublicHeatsPage() {
                       </p>
                     </header>
 
-                    <div className="mt-5 grid gap-4 xl:grid-cols-2">
-                      {eventHeats.map((heat) => {
-                        const scheduledTime = heat.scheduledTime
-                          ? format.dateTime(
-                              competitionDateTime(heat.scheduledTime),
-                              {
-                                dateStyle: "medium",
-                                timeStyle: "short",
-                                hour12: true,
-                                timeZone: "America/El_Salvador",
-                              }
-                            )
-                          : t("publicSchedule.timeTba");
-
-                        return (
-                          <article
-                            key={heat.id}
-                            className="overflow-hidden border border-white/12 bg-[#0b0b0b]"
-                          >
-                            <div className="flex flex-col gap-4 border-b border-white/10 bg-white/[0.025] p-5 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="mt-5 space-y-3">
+                      {[...categoryGroups.entries()]
+                        .sort((a, b) => a[1].order - b[1].order)
+                        .map(([key, group]) => (
+                          <CollapsibleSection
+                            key={key}
+                            id={`heat-category-${event.eventId}-${key}`}
+                            categoryId={group.categoryId}
+                            title={
                               <div>
-                                <h3 className="sivar-display text-3xl text-white">
-                                  {heat.name}
+                                <h3 className="sivar-display text-3xl text-[#f2f0eb]">
+                                  {group.name}
                                 </h3>
-                                <p className="mt-2 flex items-center gap-2 text-sm font-bold text-white/60">
-                                  <Clock3
-                                    className="h-4 w-4 text-[#ffd400]"
-                                    aria-hidden="true"
-                                  />
-                                  {scheduledTime}
+                                <p className="mt-1 text-sm text-white/50">
+                                  {t("publicSchedule.heatCount", {
+                                    count: group.heats.length,
+                                  })}
                                 </p>
                               </div>
+                            }
+                          >
+                            <div className="grid items-start gap-4 p-3 sm:p-5 xl:grid-cols-2">
+                              {group.heats.map((heat) => {
+                                const scheduledTime = heat.scheduledTime
+                                  ? format.dateTime(
+                                      competitionDateTime(heat.scheduledTime),
+                                      {
+                                        dateStyle: "medium",
+                                        timeStyle: "short",
+                                        hour12: true,
+                                        timeZone: "America/El_Salvador",
+                                      },
+                                    )
+                                  : t("publicSchedule.timeTba");
 
-                              <span
-                                className={`self-start border px-3 py-1 text-xs font-black uppercase tracking-[0.08em] ${statusClassName(heat.status)}`}
-                              >
-                                {t(statusMessageKeys[heat.status])}
-                              </span>
-                            </div>
-
-                            <div className="p-4 sm:p-5">
-                              {heat.assignments.length === 0 ? (
-                                <p className="border border-dashed border-white/12 px-4 py-7 text-center text-sm text-white/40">
-                                  {t("publicSchedule.assignmentsPending")}
-                                </p>
-                              ) : (
-                                <ul className="divide-y divide-white/8 border border-white/10">
-                                  {heat.assignments.map((assignment) => (
-                                    <li
-                                      key={assignment.id}
-                                      className="grid grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-3 px-3 py-3 sm:grid-cols-[7rem_minmax(0,1fr)] sm:px-4"
-                                    >
-                                      <p className="text-xs font-black uppercase tracking-[0.06em] text-[#ffd400] sm:text-sm">
-                                        {t("publicSchedule.laneStation", {
-                                          position: assignment.positionNumber,
-                                        })}
-                                      </p>
-                                      <div className="min-w-0">
-                                        <p className="truncate text-sm font-black text-white sm:text-base">
-                                          {assignment.bibNumber
-                                            ? `#${assignment.bibNumber} · `
-                                            : ""}
-                                          {assignment.athleteName}
-                                        </p>
-                                        <p className="mt-0.5 truncate text-xs text-white/40">
-                                          {assignment.categoryName}
+                                return (
+                                  <article
+                                    key={heat.id}
+                                    className="overflow-hidden border border-white/12 bg-[#0b0b0b]"
+                                  >
+                                    <div className="flex flex-col gap-4 border-b border-white/10 bg-white/[0.025] p-5 sm:flex-row sm:items-start sm:justify-between">
+                                      <div>
+                                        <h3 className="sivar-display text-3xl text-white">
+                                          {heat.name}
+                                        </h3>
+                                        <p className="mt-2 flex items-center gap-2 text-sm font-bold text-white/60">
+                                          <Clock3
+                                            className="h-4 w-4 text-[#ffd400]"
+                                            aria-hidden="true"
+                                          />
+                                          {scheduledTime}
                                         </p>
                                       </div>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
 
-                              <p className="mt-4 flex items-center justify-end gap-2 text-xs font-bold uppercase tracking-[0.08em] text-white/35">
-                                <Users className="h-4 w-4" aria-hidden="true" />
-                                {heat.assignedCount}/{heat.capacity}
-                              </p>
+                                      <span
+                                        className={`self-start border px-3 py-1 text-xs font-black uppercase tracking-[0.08em] ${statusClassName(heat.status)}`}
+                                      >
+                                        {t(statusMessageKeys[heat.status])}
+                                      </span>
+                                    </div>
+
+                                    <div className="p-4 sm:p-5">
+                                      {heat.assignments.length === 0 ? (
+                                        <p className="border border-dashed border-white/12 px-4 py-7 text-center text-sm text-white/40">
+                                          {t(
+                                            "publicSchedule.assignmentsPending",
+                                          )}
+                                        </p>
+                                      ) : (
+                                        <ul className="divide-y divide-white/8 border border-white/10">
+                                          {heat.assignments.map(
+                                            (assignment) => (
+                                              <li
+                                                key={assignment.id}
+                                                className="grid grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-3 px-3 py-3 sm:grid-cols-[7rem_minmax(0,1fr)] sm:px-4"
+                                              >
+                                                <p className="text-xs font-black uppercase tracking-[0.06em] text-[#ffd400] sm:text-sm">
+                                                  {t(
+                                                    "publicSchedule.laneStation",
+                                                    {
+                                                      position:
+                                                        assignment.positionNumber,
+                                                    },
+                                                  )}
+                                                </p>
+                                                <div className="min-w-0">
+                                                  <p className="truncate text-sm font-black text-white sm:text-base">
+                                                    {assignment.bibNumber
+                                                      ? `#${assignment.bibNumber} · `
+                                                      : ""}
+                                                    {assignment.athleteName}
+                                                  </p>
+                                                  <p className="mt-0.5 truncate text-xs text-white/40">
+                                                    {assignment.categoryName}
+                                                  </p>
+                                                </div>
+                                              </li>
+                                            ),
+                                          )}
+                                        </ul>
+                                      )}
+
+                                      <p className="mt-4 flex items-center justify-end gap-2 text-xs font-bold uppercase tracking-[0.08em] text-white/35">
+                                        <Users
+                                          className="h-4 w-4"
+                                          aria-hidden="true"
+                                        />
+                                        {heat.assignedCount}/{heat.capacity}
+                                      </p>
+                                    </div>
+                                  </article>
+                                );
+                              })}
                             </div>
-                          </article>
-                        );
-                      })}
+                          </CollapsibleSection>
+                        ))}
                     </div>
                   </section>
                 );

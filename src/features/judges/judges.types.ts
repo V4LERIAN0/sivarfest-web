@@ -58,6 +58,10 @@ export interface JudgeAssignmentResponse {
   categoryId: number;
   categoryName: string;
   positionNumber: number;
+  totalReps: number | null;
+  repsPerRound: number | null;
+  heatStatus: import("@/features/heats/heats.types").HeatStatus;
+  checkInStatus: import("@/features/heats/heats.types").CheckInStatus;
 }
 
 export interface JudgeFormState {

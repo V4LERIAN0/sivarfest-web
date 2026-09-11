@@ -359,7 +359,6 @@ export default async function HomePage() {
               rel="noopener noreferrer"
               className="sivar-primary-button inline-flex min-h-12 items-center justify-center gap-2 px-5 py-3 text-sm font-black uppercase tracking-[0.08em]"
             >
-              <AtSign className="h-4 w-4" aria-hidden="true" />
               {t("instagramCta")}
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
