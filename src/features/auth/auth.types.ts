@@ -9,10 +9,14 @@ export interface LoginResponse {
   id: number;
   email: string;
   role: UserRole;
+  username: string | null;
+  mustChangePassword: boolean;
 }
 
 export interface MeResponse {
   id: number;
   email: string;
   role: UserRole;
+  username: string | null;
+  mustChangePassword: boolean;
 }

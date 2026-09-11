@@ -1,9 +1,5 @@
-import {
-  ArrowRight,
-  CalendarClock,
-  Dumbbell,
-  Trophy,
-} from "lucide-react";
+import { AnnouncementList } from "@/features/announcements/AnnouncementList";
+import { ArrowRight, CalendarClock, Dumbbell, Trophy } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
@@ -32,12 +28,17 @@ export default async function EventsPage() {
     getTranslations("Events"),
   ]);
   const orderedEvents = [...events].sort(
-    (first, second) => first.displayOrder - second.displayOrder
+    (first, second) => first.displayOrder - second.displayOrder,
   );
 
   return (
     <main className="sivar-public min-h-screen bg-[#050505] text-white">
       <PublicNavbar />
+      <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6">
+        <AnnouncementList
+          path={`/public/competitions/${process.env.NEXT_PUBLIC_COMPETITION_SLUG ?? "sivarfest-2026"}/announcements`}
+        />
+      </div>
 
       <PublicPageHeader
         eyebrow={t("publicList.eyebrow")}
@@ -124,7 +125,10 @@ export default async function EventsPage() {
                           ) : (
                             <span className="inline-flex items-center gap-2 text-sm font-bold text-white/35">
                               {t("publicList.resultsNotReleased")}
-                              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                              <ArrowRight
+                                className="h-4 w-4"
+                                aria-hidden="true"
+                              />
                             </span>
                           )}
                         </div>

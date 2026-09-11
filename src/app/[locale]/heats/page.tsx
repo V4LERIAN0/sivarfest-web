@@ -1,3 +1,4 @@
+import { AnnouncementList } from "@/features/announcements/AnnouncementList";
 import { CalendarClock, Clock3, Dumbbell, Trophy, Users } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
@@ -69,6 +70,11 @@ export default async function PublicHeatsPage() {
   return (
     <main className="sivar-public min-h-screen bg-[#050505] text-white">
       <PublicNavbar />
+      <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6">
+        <AnnouncementList
+          path={`/public/competitions/${process.env.NEXT_PUBLIC_COMPETITION_SLUG ?? "sivarfest-2026"}/announcements`}
+        />
+      </div>
 
       <PublicPageHeader
         eyebrow={t("publicSchedule.eyebrow")}
@@ -149,7 +155,7 @@ export default async function PublicHeatsPage() {
                                 timeStyle: "short",
                                 hour12: true,
                                 timeZone: "America/El_Salvador",
-                              }
+                              },
                             )
                           : t("publicSchedule.timeTba");
 

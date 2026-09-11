@@ -27,10 +27,10 @@ export default async function JudgeLayout({
   ]);
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
-      <header className="border-b border-slate-800">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-          <Link href="/judge" className="text-lg font-black">
+    <main className="sivar-public min-h-screen bg-[#050505] text-[#f2f0eb]">
+      <header className="sticky top-0 z-30 border-b border-white/15 bg-black/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+          <Link href="/judge" className="sivar-display text-2xl sm:text-3xl">
             {commonT("appName")} · {judgingT("layout.role")}
           </Link>
 
@@ -46,7 +46,7 @@ export default async function JudgeLayout({
         </div>
       </header>
 
-      <section className="mx-auto max-w-6xl px-6 py-10">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
         {children}
       </section>
     </main>

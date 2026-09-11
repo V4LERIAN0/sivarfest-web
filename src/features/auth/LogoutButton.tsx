@@ -23,6 +23,12 @@ export function LogoutButton({
 
     try {
       await logout();
+      try {
+        for (const key of Object.keys(sessionStorage))
+          if (key.startsWith("sivar-judge:")) sessionStorage.removeItem(key);
+      } catch {
+        /* Device storage is optional. */
+      }
       router.push(redirectTo);
       router.refresh();
     } finally {

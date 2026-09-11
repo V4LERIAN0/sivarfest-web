@@ -3,13 +3,18 @@
 import type { EventPublicResponse } from "@/features/events/events.types";
 import { Clock3, Dumbbell, ListChecks } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export function EventVariationPanel({ event }: { event: EventPublicResponse }) {
   const t = useTranslations("Events.publicList");
   const variations = event.variations ?? [];
+  const query = useSearchParams();
+  const linkedCategory = Number(query.get("category"));
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    variations[0]?.categoryId ?? null,
+    variations.find((v) => v.categoryId === linkedCategory)?.categoryId ??
+      variations[0]?.categoryId ??
+      null,
   );
   const selectedVariation =
     variations.find(
@@ -24,17 +29,17 @@ export function EventVariationPanel({ event }: { event: EventPublicResponse }) {
   const timeCapSeconds =
     selectedVariation?.timeCapSeconds ?? event.timeCapSeconds;
   const totalReps = selectedVariation?.totalReps ?? event.totalReps;
-  const repsPerRound =
-    selectedVariation?.repsPerRound ?? event.repsPerRound;
+  const repsPerRound = selectedVariation?.repsPerRound ?? event.repsPerRound;
   let formattedDuration: string | null = null;
   if (timeCapSeconds !== null) {
     const minutes = Math.floor(timeCapSeconds / 60);
     const seconds = timeCapSeconds % 60;
-    formattedDuration = minutes === 0
-      ? t("seconds", { seconds })
-      : seconds === 0
-        ? t("minutes", { minutes })
-        : t("minutesAndSeconds", { minutes, seconds });
+    formattedDuration =
+      minutes === 0
+        ? t("seconds", { seconds })
+        : seconds === 0
+          ? t("minutes", { minutes })
+          : t("minutesAndSeconds", { minutes, seconds });
   }
 
   return (

@@ -1,3 +1,4 @@
+import { ExperienceAction } from "@/features/athletes/ExperienceAction";
 import { getAdminAthletes } from "@/features/athletes/athletes.api";
 import { getAdminCategories } from "@/features/categories/categories.api";
 import { getAdminCompetitionById } from "@/features/competitions/competitions.api";
@@ -29,32 +30,32 @@ export default async function AdminHeatsPage({
   const route = await params;
   const competitionId = Number(route.competitionId);
   const eventId = Number(route.eventId);
-  const [competition, event, events, heats, athletes, categories] = await Promise.all([
-    getAdminCompetitionById(competitionId),
-    getAdminEvent(eventId),
-    getAdminEvents(competitionId),
-    getAdminHeats(eventId),
-    getAdminAthletes(competitionId),
-    getAdminCategories(competitionId),
-  ]);
+  const [competition, event, events, heats, athletes, categories] =
+    await Promise.all([
+      getAdminCompetitionById(competitionId),
+      getAdminEvent(eventId),
+      getAdminEvents(competitionId),
+      getAdminHeats(eventId),
+      getAdminAthletes(competitionId),
+      getAdminCategories(competitionId),
+    ]);
   const activeHeats = heats.filter((heat) => heat.status !== "CANCELLED");
   const [judges, assignmentLists] = await Promise.all([
     getAdminJudges(competitionId),
     Promise.all(
-      activeHeats.map((heat) => getAdminHeatJudgeAssignments(heat.id))
+      activeHeats.map((heat) => getAdminHeatJudgeAssignments(heat.id)),
     ),
   ]);
   const judgeAssignments = new Map(
-    assignmentLists.flat().map((assignment) => [
-      assignment.heatAssignmentId,
-      assignment,
-    ])
+    assignmentLists
+      .flat()
+      .map((assignment) => [assignment.heatAssignmentId, assignment]),
   );
   const historicalHeats = heats.filter((heat) => heat.status === "CANCELLED");
   const maxNumber = Math.max(0, ...heats.map((heat) => heat.heatNumber));
   const eligibleAthletes = athletes.filter(
     (athlete) =>
-      athlete.status !== "WITHDRAWN" && athlete.status !== "DISQUALIFIED"
+      athlete.status !== "WITHDRAWN" && athlete.status !== "DISQUALIFIED",
   );
 
   return (
@@ -115,7 +116,7 @@ export default async function AdminHeatsPage({
         {activeHeats.map((heat) => {
           const heatCategory = heat.assignments[0];
           const usedLanes = new Set(
-            heat.assignments.map((assignment) => assignment.positionNumber)
+            heat.assignments.map((assignment) => assignment.positionNumber),
           );
           let nextLane = 1;
           while (usedLanes.has(nextLane)) nextLane += 1;
@@ -153,7 +154,7 @@ export default async function AdminHeatsPage({
                       null,
                       competitionId,
                       eventId,
-                      heat.id
+                      heat.id,
                     )}
                   >
                     <button className="rounded-lg border border-red-500/40 px-3 py-2 text-xs font-bold text-red-200 hover:bg-red-500/10">
@@ -169,6 +170,7 @@ export default async function AdminHeatsPage({
                     <tr>
                       <th className="pb-3">Athlete</th>
                       <th className="pb-3">Category</th>
+                      <th className="pb-3">Check-in</th>
                       <th className="pb-3">Position</th>
                       <th className="pb-3">Judge</th>
                       <th className="pb-3 text-right">Action</th>
@@ -188,6 +190,20 @@ export default async function AdminHeatsPage({
                         </td>
                         <td className="py-3 text-slate-300">
                           {assignment.categoryName}
+                        </td>
+                        <td className="py-3 pr-3">
+                          {["CHECKED_IN", "MANUAL_CHECKED_IN"].includes(
+                            assignment.checkInStatus,
+                          ) ? (
+                            <span className="text-emerald-300">Confirmado</span>
+                          ) : heat.status !== "COMPLETED" ? (
+                            <ExperienceAction
+                              path={`/admin/heat-assignments/${assignment.id}/check-in`}
+                              label="Confirmar asistencia"
+                            />
+                          ) : (
+                            <span>—</span>
+                          )}
                         </td>
                         <td className="py-3">
                           <AssignmentPositionForm
@@ -211,7 +227,7 @@ export default async function AdminHeatsPage({
                                   null,
                                   competitionId,
                                   eventId,
-                                  judgeAssignments.get(assignment.id)!.id
+                                  judgeAssignments.get(assignment.id)!.id,
                                 )}
                               >
                                 <button className="text-xs font-bold text-red-300 hover:text-red-200">
@@ -227,7 +243,7 @@ export default async function AdminHeatsPage({
                               null,
                               competitionId,
                               eventId,
-                              assignment.id
+                              assignment.id,
                             )}
                           >
                             <button className="text-xs font-bold text-red-300 hover:text-red-200">
@@ -262,7 +278,7 @@ export default async function AdminHeatsPage({
                     heatCategory
                       ? eligibleAthletes.filter(
                           (athlete) =>
-                            athlete.categoryId === heatCategory.categoryId
+                            athlete.categoryId === heatCategory.categoryId,
                         )
                       : eligibleAthletes
                   }
@@ -287,8 +303,8 @@ export default async function AdminHeatsPage({
           <div className="mt-4 space-y-2 text-sm text-slate-400">
             {historicalHeats.map((heat) => (
               <p key={heat.id}>
-                Heat {heat.heatNumber}: {heat.name} · {heat.assignedCount} stored
-                assignments · hidden publicly
+                Heat {heat.heatNumber}: {heat.name} · {heat.assignedCount}{" "}
+                stored assignments · hidden publicly
               </p>
             ))}
           </div>

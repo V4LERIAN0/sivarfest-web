@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -13,10 +13,11 @@ type LoginFormProps = {
 
 export function LoginForm({
   judgeDestination = "/judge",
-  athleteDestination = "/",
+  athleteDestination = "/es/athlete",
 }: LoginFormProps) {
   const router = useRouter();
   const t = useTranslations("Auth");
+  const locale = useLocale();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,6 +35,12 @@ export function LoginForm({
         email,
         password,
       });
+
+      if (user.mustChangePassword) {
+        router.push(`/${locale}/change-password`);
+        router.refresh();
+        return;
+      }
 
       if (user.role === "ADMIN") {
         router.push("/admin");
@@ -65,12 +72,19 @@ export function LoginForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="text-xs font-black uppercase tracking-[0.12em] text-white/65">
+        <label
+          htmlFor="login-username"
+          className="text-xs font-black uppercase tracking-[0.12em] text-white/65"
+        >
           {t("email")}
         </label>
 
         <input
-          type="email"
+          id="login-username"
+          type="text"
+          autoComplete="username"
+          autoCapitalize="none"
+          spellCheck={false}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           className="mt-2 min-h-12 w-full border border-white/15 bg-black/55 px-4 py-3 text-white outline-none transition placeholder:text-white/25 focus:border-[#ffd400]/70 focus:ring-2 focus:ring-[#ffd400]/20"
@@ -80,12 +94,17 @@ export function LoginForm({
       </div>
 
       <div>
-        <label className="text-xs font-black uppercase tracking-[0.12em] text-white/65">
+        <label
+          htmlFor="login-password"
+          className="text-xs font-black uppercase tracking-[0.12em] text-white/65"
+        >
           {t("password")}
         </label>
 
         <input
+          id="login-password"
           type="password"
+          autoComplete="current-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           className="mt-2 min-h-12 w-full border border-white/15 bg-black/55 px-4 py-3 text-white outline-none transition placeholder:text-white/25 focus:border-[#ffd400]/70 focus:ring-2 focus:ring-[#ffd400]/20"
