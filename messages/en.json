@@ -280,6 +280,7 @@
       "result": "Result",
       "finished": "Finished",
       "cappedDnf": "Capped / DNF",
+      "timeEntryHint": "Enter MM:SS (03:25) or total seconds (205).",
       "completionTime": "Completion time",
       "timeCap": "Time cap: {cap}",
       "completedReps": "Completed reps",

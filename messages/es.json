@@ -280,6 +280,7 @@
       "result": "Resultado",
       "finished": "Finalizó",
       "cappedDnf": "Límite de tiempo / No finalizó",
+      "timeEntryHint": "Escribe MM:SS (03:25) o segundos totales (205).",
       "completionTime": "Tiempo de finalización",
       "timeCap": "Límite de tiempo: {cap}",
       "completedReps": "Repeticiones completadas",

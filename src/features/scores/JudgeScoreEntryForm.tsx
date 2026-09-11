@@ -321,12 +321,21 @@ export function JudgeScoreEntryForm({
                   <Field label={t("completionTime")}>
                     <input
                       name="scoreTime"
-                      inputMode="numeric"
+                      type="text"
+                      inputMode="text"
+                      aria-describedby={`score-time-help-${assignment.id}`}
                       defaultValue={formatScoreTime(score?.scoreSeconds)}
                       required
                       placeholder="MM:SS"
                       className={field}
                     />
+
+                    <p
+                      id={`score-time-help-${assignment.id}`}
+                      className="mt-1 text-xs text-white/55"
+                    >
+                      {t("timeEntryHint")}
+                    </p>
 
                     {assignment.timeCapSeconds !== null && (
                       <p className="mt-1 text-xs text-white/45">
@@ -426,10 +435,15 @@ export function JudgeScoreEntryForm({
               <Field label={tiebreakLabel}>
                 <input
                   name="tiebreakValue"
+                  aria-describedby={
+                    assignment.tiebreakType === "TIME"
+                      ? `tiebreak-time-help-${assignment.id}`
+                      : undefined
+                  }
                   required={assignment.tiebreakRequired}
                   type={assignment.tiebreakType === "TIME" ? "text" : "number"}
                   inputMode={
-                    assignment.tiebreakType === "TIME" ? "numeric" : "decimal"
+                    assignment.tiebreakType === "TIME" ? "text" : "decimal"
                   }
                   min={assignment.tiebreakType === "TIME" ? undefined : 0}
                   step={assignment.tiebreakType === "TIME" ? undefined : "any"}
@@ -443,6 +457,14 @@ export function JudgeScoreEntryForm({
                   }
                   className={field}
                 />
+                {assignment.tiebreakType === "TIME" && (
+                  <p
+                    id={`tiebreak-time-help-${assignment.id}`}
+                    className="mt-1 text-xs text-white/55"
+                  >
+                    {t("timeEntryHint")}
+                  </p>
+                )}
               </Field>
             )}
 
