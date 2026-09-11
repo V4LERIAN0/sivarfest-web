@@ -1,4 +1,5 @@
-import { Activity, ArrowRight, Medal, Trophy, Users } from "lucide-react";
+import { CollapsibleSection } from "@/components/public/CollapsibleSection";
+import { Activity, ArrowRight, Trophy, Users } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
@@ -220,11 +221,11 @@ export default async function OverallLeaderboardPage() {
 
               <div className="mt-7 space-y-10">
                 {leaderboard.categories.map((category) => (
-                  <section
+                  <CollapsibleSection
                     key={category.categoryId}
-                    className="overflow-hidden border border-white/12 bg-[#0b0b0b]"
-                  >
-                    <header className="flex flex-col gap-3 border-b border-white/10 bg-white/[0.025] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+                    id={`category-${category.categoryId}`}
+                    categoryId={category.categoryId}
+                    title={
                       <div>
                         <h3 className="sivar-display text-3xl text-[#f2f0eb] sm:text-4xl">
                           {category.categoryName}
@@ -238,12 +239,8 @@ export default async function OverallLeaderboardPage() {
                             .join(" · ")}
                         </p>
                       </div>
-                      <Medal
-                        className="h-5 w-5 text-[#ffd400]"
-                        aria-hidden="true"
-                      />
-                    </header>
-
+                    }
+                  >
                     <div className="divide-y divide-white/8 md:hidden">
                       {category.rows.map((row) => {
                         const details = athleteDetails(row);
@@ -472,7 +469,7 @@ export default async function OverallLeaderboardPage() {
                         </tbody>
                       </table>
                     </div>
-                  </section>
+                  </CollapsibleSection>
                 ))}
 
                 {leaderboard.categories.length === 0 && (

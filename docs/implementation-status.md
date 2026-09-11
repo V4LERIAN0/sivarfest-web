@@ -30,3 +30,7 @@ Frontend ESLint and production build/type checking pass. Backend has 23 passing 
 - Public multi-competition/history routing, generated shared DTO contracts and broad UI automation remain future work.
 
 See `meeting-release.md` for local installation, deployment service mapping, account activation and the meeting rehearsal.
+
+## Public navigation polish — 2026-09-11
+
+The athlete identity header now gives the photo/name their own row and places profile completion above it. Athlete pages use the main header's account menu. Public links indicate the current route, including nested profiles/results. Native disclosures now cover athlete divisions/genders, WODs and their selected variant content, heat category groups, and both leaderboards. Landing roster previews still show ten per category with show-all controls, and are also collapsible. Direct WOD/category links and default variation content are preserved. Station labels and SC/RX roster copy are updated in Spanish/English. No backend changes or sponsor asset changes in this slice. See `docs/public-polish-release.md` for application, review, and rollout steps.

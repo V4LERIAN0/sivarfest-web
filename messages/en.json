@@ -64,7 +64,7 @@
       "overviewTitle": "The Historic Center becomes the arena.",
       "directoryEyebrow": "Official roster",
       "directoryTitle": "Find your name. Claim your place.",
-      "directoryDescription": "SC and RX, side by side. Meet the athletes taking the SIVARFEST floor this September 19.",
+      "directoryDescription": "SC and RX categories. Meet the athletes taking the SIVARFEST floor on September 19.",
       "viewFullRoster": "See complete roster",
       "emptyRosterTitle": "Roster coming soon",
       "emptyRosterDescription": "We’re getting the SC and RX lineup ready.",
@@ -153,7 +153,8 @@
       "liveLeaderboard": "View live leaderboard",
       "resultsNotReleased": "Results not released",
       "emptyTitle": "No events available",
-      "emptyDescription": "The next SIVARFEST tests will be revealed soon."
+      "emptyDescription": "The next SIVARFEST tests will be revealed soon.",
+      "descriptionLabel": "Description"
     }
   },
   "Heats": {
@@ -175,10 +176,11 @@
       "event": "Event {eventCode}",
       "heatCount": "{count, plural, one {# heat} other {# heats}}",
       "timeTba": "Time TBA",
-      "laneStation": "Lane / station {position, number}",
+      "laneStation": "Station {position, number}",
       "assignmentsPending": "Athlete assignments pending.",
       "emptyTitle": "Heat schedule not available",
-      "emptyDescription": "The public heat schedule has not been published yet."
+      "emptyDescription": "The public heat schedule has not been published yet.",
+      "categoryPending": "Category to be confirmed"
     }
   },
   "Leaderboard": {
@@ -327,7 +329,7 @@
     "next": "Your next heat",
     "noNext": "Your next heat has not been scheduled yet.",
     "notScheduled": "Time to be confirmed",
-    "lane": "Lane {lane}",
+    "lane": "Station {lane}",
     "schedule": "My heats",
     "checkIn": "Check in",
     "opens": "Check-in opens at {time}",
@@ -378,7 +380,8 @@
     },
     "loadError": "We could not load your account. Try again or contact the organizers.",
     "retry": "Try again",
-    "loading": "Loading your competition…"
+    "loading": "Loading your competition…",
+    "accountMenu": "Account"
   },
   "PasswordChange": {
     "eyebrow": "YOUR ACCOUNT",

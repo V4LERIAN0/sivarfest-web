@@ -3,6 +3,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { CollapsibleSection } from "@/components/public/CollapsibleSection";
 
 import { Link } from "@/i18n/navigation";
 import { athletePhotoUrl } from "@/lib/athlete-photo";
@@ -208,7 +209,7 @@ export function AthleteDirectory({
   }
 
   return (
-    <div className="grid gap-5 lg:grid-cols-2">
+    <div className="grid items-start gap-5 lg:grid-cols-2">
       {divisions.map((division) => {
         const divisionAthleteCount = division.categories.reduce(
           (total, category) => total + category.athletes.length,
@@ -216,24 +217,24 @@ export function AthleteDirectory({
         );
 
         return (
-          <section
+          <CollapsibleSection
             key={division.key}
-            aria-labelledby={`division-${division.key}`}
-            className="overflow-hidden border border-white/12 bg-[#0b0b0b]"
+            defaultOpen={initialLimit !== undefined}
+            title={
+              <div className="flex items-center justify-between gap-4">
+                <h3
+                  id={`division-${division.key}`}
+                  className="sivar-display text-4xl text-white"
+                >
+                  {division.name}
+                </h3>
+                <span className="border border-[#ffd400]/30 bg-[#ffd400]/10 px-2.5 py-1 text-xs font-black uppercase tracking-[0.1em] text-[#ffe45c]">
+                  {t("athleteCount", { count: divisionAthleteCount })}
+                </span>
+              </div>
+            }
           >
-            <header className="flex items-center justify-between gap-4 border-b border-white/10 bg-white/[0.035] px-5 py-4 sm:px-6">
-              <h3
-                id={`division-${division.key}`}
-                className="sivar-display text-4xl text-white"
-              >
-                {division.name}
-              </h3>
-              <span className="border border-[#ffd400]/30 bg-[#ffd400]/10 px-2.5 py-1 text-xs font-black uppercase tracking-[0.1em] text-[#ffe45c]">
-                {t("athleteCount", { count: divisionAthleteCount })}
-              </span>
-            </header>
-
-            <div className="grid divide-y divide-white/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+            <div className="grid items-start divide-y divide-white/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
               {division.categories.map((category) => {
                 const categoryStateKey = `${division.key}-${category.key}`;
                 const isExpandable =
@@ -247,23 +248,25 @@ export function AthleteDirectory({
                 const listId = `athlete-list-${categoryStateKey.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
                 return (
-                  <section
+                  <CollapsibleSection
                     key={category.key}
-                    aria-labelledby={`category-${category.key}`}
-                    className="min-w-0"
+                    defaultOpen={initialLimit !== undefined}
+                    className="min-w-0 border-0"
+                    summaryClassName="px-4 sm:px-5"
+                    title={
+                      <div className="flex items-center justify-between gap-3">
+                        <h4
+                          id={`category-${category.key}`}
+                          className="text-sm font-black uppercase tracking-[0.1em] text-white/65"
+                        >
+                          {t(`gender.${category.genderClassification}`)}
+                        </h4>
+                        <span className="text-xs font-bold text-white/35">
+                          {category.athletes.length}
+                        </span>
+                      </div>
+                    }
                   >
-                    <header className="flex items-center justify-between gap-3 border-b border-white/8 px-4 py-3 sm:px-5">
-                      <h4
-                        id={`category-${category.key}`}
-                        className="text-xs font-black uppercase tracking-[0.14em] text-white/65"
-                      >
-                        {t(`gender.${category.genderClassification}`)}
-                      </h4>
-                      <span className="text-xs font-bold text-white/35">
-                        {category.athletes.length}
-                      </span>
-                    </header>
-
                     {category.athletes.length === 0 ? (
                       <p className="px-4 py-7 text-sm text-white/45 sm:px-5">
                         {t("categoryRosterPending")}
@@ -359,11 +362,11 @@ export function AthleteDirectory({
                         </button>
                       </div>
                     )}
-                  </section>
+                  </CollapsibleSection>
                 );
               })}
             </div>
-          </section>
+          </CollapsibleSection>
         );
       })}
     </div>

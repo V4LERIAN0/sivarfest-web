@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { PublicNavbar } from "@/components/layout/PublicNavbar";
 import { PublicPageFooter } from "@/components/public/PublicPageFooter";
 import { PublicPageHeader } from "@/components/public/PublicPageHeader";
+import { CollapsibleSection } from "@/components/public/CollapsibleSection";
 import { EventVariationPanel } from "@/components/public/EventVariationPanel";
 import { getPublicEvents } from "@/features/events/events.api";
 import type { ScoreType } from "@/features/events/events.types";
@@ -83,58 +84,57 @@ export default async function EventsPage() {
             <div className="space-y-5">
               {orderedEvents.map((event, index) => {
                 return (
-                  <article
+                  <CollapsibleSection
                     key={event.id}
                     id={`event-${event.id}`}
-                    className="scroll-mt-28 overflow-hidden border border-white/12 bg-[#0b0b0b]"
-                  >
-                    <div className="grid lg:grid-cols-[11rem_minmax(0,1fr)]">
-                      <div className="relative overflow-hidden border-b border-white/10 bg-white/[0.025] p-6 lg:border-b-0 lg:border-r">
-                        <span className="sivar-display text-7xl text-white/10">
+                    title={
+                      <div className="flex items-center gap-4 sm:gap-6">
+                        <span
+                          aria-hidden="true"
+                          className="sivar-display text-4xl text-white/20 sm:text-5xl"
+                        >
                           {String(index + 1).padStart(2, "0")}
                         </span>
-                        <p className="mt-8 text-xs font-black uppercase tracking-[0.14em] text-[#ff7a2f] lg:mt-20">
-                          {t("publicList.event", {
-                            eventCode: event.eventCode,
-                          })}
-                        </p>
-                      </div>
-
-                      <div className="p-5 sm:p-7 lg:p-9">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="border border-[#ffd400]/30 bg-[#ffd400]/10 px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-[#ffe45c]">
+                        <div>
+                          <p className="sivar-kicker">
+                            {t("publicList.event", {
+                              eventCode: event.eventCode,
+                            })}
+                          </p>
+                          <h2 className="sivar-display mt-2 text-3xl leading-[1.1] text-[#f2f0eb] sm:text-4xl">
+                            {event.name}
+                          </h2>
+                          <p className="mt-2 text-sm font-bold text-white/55">
                             {t(scoreTypeMessageKeys[event.scoreType])}
+                          </p>
+                        </div>
+                      </div>
+                    }
+                  >
+                    <div className="px-5 pb-6 sm:px-7">
+                      <EventVariationPanel event={event} />
+
+                      <div className="mt-8 flex justify-end border-t border-white/10 pt-5">
+                        {event.scoreVisible && event.status !== "DRAFT" ? (
+                          <Link
+                            href={`/leaderboard/events/${event.id}`}
+                            className="inline-flex min-h-11 items-center justify-center gap-2 bg-[#ffd400] px-5 py-3 text-sm font-black uppercase tracking-[0.08em] text-black transition hover:bg-[#ffe45c]"
+                          >
+                            <Trophy className="h-4 w-4" aria-hidden="true" />
+                            {t("publicList.viewResults")}
+                          </Link>
+                        ) : (
+                          <span className="inline-flex items-center gap-2 text-sm font-bold text-white/35">
+                            {t("publicList.resultsNotReleased")}
+                            <ArrowRight
+                              className="h-4 w-4"
+                              aria-hidden="true"
+                            />
                           </span>
-                        </div>
-
-                        <h2 className="sivar-display mt-5 text-4xl leading-none text-[#f2f0eb] sm:text-5xl">
-                          {event.name}
-                        </h2>
-
-                        <EventVariationPanel event={event} />
-
-                        <div className="mt-8 flex justify-end border-t border-white/10 pt-5">
-                          {event.scoreVisible && event.status !== "DRAFT" ? (
-                            <Link
-                              href={`/leaderboard/events/${event.id}`}
-                              className="inline-flex min-h-11 items-center justify-center gap-2 bg-[#ffd400] px-5 py-3 text-sm font-black uppercase tracking-[0.08em] text-black transition hover:bg-[#ffe45c]"
-                            >
-                              <Trophy className="h-4 w-4" aria-hidden="true" />
-                              {t("publicList.viewResults")}
-                            </Link>
-                          ) : (
-                            <span className="inline-flex items-center gap-2 text-sm font-bold text-white/35">
-                              {t("publicList.resultsNotReleased")}
-                              <ArrowRight
-                                className="h-4 w-4"
-                                aria-hidden="true"
-                              />
-                            </span>
-                          )}
-                        </div>
+                        )}
                       </div>
                     </div>
-                  </article>
+                  </CollapsibleSection>
                 );
               })}
             </div>

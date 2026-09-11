@@ -22,26 +22,30 @@ export default async function AthletePage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-12 px-4 py-10 sm:px-6 sm:py-14">
-      <header className="flex flex-wrap items-center gap-5">
-        <AthletePortrait
-          name={data.profile.fullName}
-          url={data.profile.profilePhotoUrl}
-        />
-        <div className="min-w-0 flex-1">
+      <header>
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <p className="sivar-kicker">{t("eyebrow")}</p>
-          <h1 className="sivar-display mt-2 break-words text-4xl sm:text-5xl">
-            {data.profile.fullName}
-          </h1>
-          <p className="mt-2 text-sm text-white/55">
-            {data.profile.categoryName} · @{data.profile.username}
-          </p>
+          <Link
+            href="/athlete/profile"
+            className="sivar-primary-button inline-flex min-h-11 items-center justify-center px-4 py-3 text-sm font-black"
+          >
+            {t("edit")}
+          </Link>
         </div>
-        <Link
-          href="/athlete/profile"
-          className="sivar-primary-button px-5 py-3 text-sm font-black"
-        >
-          {t("edit")}
-        </Link>
+        <div className="flex items-center gap-4 sm:gap-6">
+          <AthletePortrait
+            name={data.profile.fullName}
+            url={data.profile.profilePhotoUrl}
+          />
+          <div className="min-w-0 flex-1">
+            <h1 className="sivar-display text-4xl leading-[1.1] [overflow-wrap:anywhere] [text-wrap:wrap] sm:text-5xl">
+              {data.profile.fullName}
+            </h1>
+            <p className="mt-3 text-sm text-white/55 [overflow-wrap:anywhere]">
+              {data.profile.categoryName} · @{data.profile.username}
+            </p>
+          </div>
+        </div>
       </header>
       <AnnouncementList path="/athlete/me/announcements" />
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">

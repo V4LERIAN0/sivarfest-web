@@ -64,7 +64,7 @@
       "overviewTitle": "El Centro Histórico se convierte en arena.",
       "directoryEyebrow": "Roster oficial",
       "directoryTitle": "Encuentra tu nombre. Toma tu lugar.",
-      "directoryDescription": "SC y RX frente a frente. Conoce a los atletas que tomarán el floor de SIVARFEST este 19 de septiembre.",
+      "directoryDescription": "Categorías SC y RX. Conoce a los atletas que tomarán el floor de SIVARFEST este 19 de septiembre.",
       "viewFullRoster": "Ver roster completo",
       "emptyRosterTitle": "El roster viene pronto",
       "emptyRosterDescription": "Estamos preparando la alineación de SC y RX.",
@@ -153,7 +153,8 @@
       "liveLeaderboard": "Ver leaderboard en vivo",
       "resultsNotReleased": "Resultados aún no publicados",
       "emptyTitle": "No hay eventos disponibles",
-      "emptyDescription": "Las próximas pruebas de SIVARFEST se revelarán muy pronto."
+      "emptyDescription": "Las próximas pruebas de SIVARFEST se revelarán muy pronto.",
+      "descriptionLabel": "Descripción"
     }
   },
   "Heats": {
@@ -175,10 +176,11 @@
       "event": "Evento {eventCode}",
       "heatCount": "{count, plural, one {# heat} other {# heats}}",
       "timeTba": "Horario por confirmar",
-      "laneStation": "Carril / estación {position, number}",
+      "laneStation": "Estación {position, number}",
       "assignmentsPending": "Asignaciones de atletas pendientes.",
       "emptyTitle": "Horario de heats no disponible",
-      "emptyDescription": "El horario público de heats aún no ha sido publicado."
+      "emptyDescription": "El horario público de heats aún no ha sido publicado.",
+      "categoryPending": "Categoría por confirmar"
     }
   },
   "Leaderboard": {
@@ -327,7 +329,7 @@
     "next": "Tu próximo heat",
     "noNext": "Tu próximo heat aún no está programado.",
     "notScheduled": "Horario por confirmar",
-    "lane": "Carril {lane}",
+    "lane": "Estación {lane}",
     "schedule": "Mis heats",
     "checkIn": "Confirmar mi asistencia",
     "opens": "Check-in desde {time}",
@@ -378,7 +380,8 @@
     },
     "loadError": "No pudimos cargar tu cuenta. Inténtalo de nuevo o contacta a la organización.",
     "retry": "Intentar de nuevo",
-    "loading": "Cargando tu competencia…"
+    "loading": "Cargando tu competencia…",
+    "accountMenu": "Mi cuenta"
   },
   "PasswordChange": {
     "eyebrow": "TU CUENTA",
