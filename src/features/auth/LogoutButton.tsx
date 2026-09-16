@@ -1,7 +1,6 @@
 "use client";
 
 import { logout } from "@/features/auth/auth.api";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type LogoutButtonProps = {
@@ -15,7 +14,6 @@ export function LogoutButton({
   loadingLabel = "Signing out...",
   redirectTo = "/login",
 }: LogoutButtonProps) {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleLogout() {
@@ -29,8 +27,7 @@ export function LogoutButton({
       } catch {
         /* Device storage is optional. */
       }
-      router.push(redirectTo);
-      router.refresh();
+      window.location.replace(redirectTo);
     } finally {
       setIsLoading(false);
     }

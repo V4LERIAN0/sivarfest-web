@@ -1,10 +1,16 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
-import { useRouter } from "next/navigation";
+import { isAxiosError } from "axios";
 import { useState } from "react";
+import { useHydrated } from "@/lib/use-hydrated";
 
-import { login } from "@/features/auth/auth.api";
+import {
+  confirmSession,
+  login,
+  SessionEstablishmentError,
+  SessionUnavailableError,
+} from "@/features/auth/auth.api";
 
 type LoginFormProps = {
   judgeDestination?: string;
@@ -15,9 +21,9 @@ export function LoginForm({
   judgeDestination = "/judge",
   athleteDestination = "/es/athlete",
 }: LoginFormProps) {
-  const router = useRouter();
   const t = useTranslations("Auth");
   const locale = useLocale();
+  const hydrated = useHydrated();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,36 +41,29 @@ export function LoginForm({
         email,
         password,
       });
+      await confirmSession(user);
 
-      if (user.mustChangePassword) {
-        router.push(`/${locale}/change-password`);
-        router.refresh();
-        return;
-      }
-
-      if (user.role === "ADMIN") {
-        router.push("/admin");
-        router.refresh();
-        return;
-      }
-
-      if (user.role === "ATHLETE") {
-        router.push(athleteDestination);
-        router.refresh();
-        return;
-      }
-
-      if (user.role === "JUDGE") {
-        router.push(judgeDestination);
-        router.refresh();
-        return;
-      }
-
-      router.push("/");
-      router.refresh();
-    } catch {
-      setError(t("invalidCredentials"));
-    } finally {
+      const destination = user.mustChangePassword
+        ? `/${locale}/change-password`
+        : user.role === "ADMIN"
+          ? "/admin"
+          : user.role === "ATHLETE"
+            ? athleteDestination
+            : judgeDestination;
+      // Start a new document so stale unauthenticated router state cannot win.
+      window.location.replace(destination);
+    } catch (error) {
+      setError(
+        t(
+          error instanceof SessionEstablishmentError
+            ? "sessionNotEstablished"
+            : error instanceof SessionUnavailableError
+              ? "sessionUnavailable"
+              : isAxiosError(error) && error.response?.status === 401
+                ? "invalidCredentials"
+                : "serviceUnavailable",
+        ),
+      );
       setIsLoading(false);
     }
   }
@@ -85,6 +84,7 @@ export function LoginForm({
           autoComplete="username"
           autoCapitalize="none"
           spellCheck={false}
+          disabled={!hydrated}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           className="mt-2 min-h-12 w-full border border-white/15 bg-black/55 px-4 py-3 text-white outline-none transition placeholder:text-white/25 focus:border-[#ffd400]/70 focus:ring-2 focus:ring-[#ffd400]/20"
@@ -105,6 +105,7 @@ export function LoginForm({
           id="login-password"
           type="password"
           autoComplete="current-password"
+          disabled={!hydrated}
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           className="mt-2 min-h-12 w-full border border-white/15 bg-black/55 px-4 py-3 text-white outline-none transition placeholder:text-white/25 focus:border-[#ffd400]/70 focus:ring-2 focus:ring-[#ffd400]/20"
@@ -114,14 +115,14 @@ export function LoginForm({
       </div>
 
       {error && (
-        <div className="border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
+        <div role="alert" className="border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
           {error}
         </div>
       )}
 
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={!hydrated || isLoading}
         className="sivar-primary-button min-h-12 w-full px-5 py-3 text-sm font-black uppercase tracking-[0.08em] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isLoading ? t("signingIn") : t("signIn")}

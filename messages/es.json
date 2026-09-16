@@ -31,6 +31,9 @@
     "signIn": "Iniciar sesión",
     "signingIn": "Iniciando sesión...",
     "invalidCredentials": "Correo electrónico o contraseña incorrectos.",
+    "sessionNotEstablished": "Tus credenciales son correctas, pero no pudimos guardar tu sesión. Permite las cookies de este sitio e intenta de nuevo. Si el problema continúa, contacta a los organizadores.",
+    "sessionUnavailable": "Tus credenciales fueron aceptadas, pero no pudimos confirmar tu sesión. Intenta de nuevo en un momento; no necesitas cambiar tu contraseña.",
+    "serviceUnavailable": "No pudimos conectarnos al servicio de inicio de sesión. Revisa tu conexión e intenta de nuevo en un momento.",
     "signOut": "Cerrar sesión",
     "signingOut": "Cerrando sesión...",
     "portalAccess": "Acceso SIVARFEST",
@@ -395,6 +398,8 @@
     "saving": "Actualizando…",
     "mismatch": "Las contraseñas no coinciden.",
     "error": "No se pudo cambiar la contraseña. Revisa tu contraseña actual e inténtalo de nuevo.",
+    "sessionNotEstablished": "Tu contraseña se actualizó, pero no pudimos guardar tu sesión. Permite las cookies de este sitio e inicia sesión de nuevo con tu nueva contraseña.",
+    "sessionUnavailable": "Tu contraseña se actualizó, pero no pudimos confirmar tu sesión. En un momento, inicia sesión de nuevo con tu nueva contraseña.",
     "link": "Cambiar contraseña"
   },
   "JudgeWorkspace": {

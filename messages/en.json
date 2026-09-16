@@ -31,6 +31,9 @@
     "signIn": "Sign in",
     "signingIn": "Signing in...",
     "invalidCredentials": "Invalid email or password.",
+    "sessionNotEstablished": "Your credentials are correct, but we could not save your session. Allow cookies for this site and try again. If it keeps happening, contact the organizers.",
+    "sessionUnavailable": "Your credentials were accepted, but we could not confirm your session. Please try again in a moment; you do not need to change your password.",
+    "serviceUnavailable": "We could not connect to the sign-in service. Check your connection and try again in a moment.",
     "signOut": "Sign out",
     "signingOut": "Signing out...",
     "portalAccess": "SIVARFEST access",
@@ -395,6 +398,8 @@
     "saving": "Updating…",
     "mismatch": "The passwords do not match.",
     "error": "Could not change password. Check your current password and try again.",
+    "sessionNotEstablished": "Your password was changed, but we could not save your session. Allow cookies for this site, then sign in again with your new password.",
+    "sessionUnavailable": "Your password was changed, but we could not confirm your session. Please sign in again with your new password in a moment.",
     "link": "Change password"
   },
   "JudgeWorkspace": {

@@ -1,14 +1,11 @@
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
+import { getServerApiUrl } from "./api-url";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8081/api";
+const API_URL = getServerApiUrl();
 
 async function getCookieHeader() {
-  const cookieStore = await cookies();
-
-  return cookieStore
-    .getAll()
-    .map((cookie) => `${cookie.name}=${cookie.value}`)
-    .join("; ");
+  // Preserve duplicate-cookie order so SSR and direct API calls see the same tokens.
+  return (await headers()).get("cookie") ?? "";
 }
 
 async function handleResponse<T>(response: Response, path: string): Promise<T> {

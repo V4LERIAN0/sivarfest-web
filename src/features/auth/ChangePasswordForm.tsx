@@ -1,13 +1,18 @@
 "use client";
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import { apiClient } from "@/lib/api-client";
+import { useHydrated } from "@/lib/use-hydrated";
+import {
+  confirmSession,
+  SessionEstablishmentError,
+  SessionUnavailableError,
+} from "./auth.api";
 import type { LoginResponse } from "./auth.types";
 export function ChangePasswordForm() {
   const t = useTranslations("PasswordChange");
   const locale = useLocale();
-  const router = useRouter();
+  const hydrated = useHydrated();
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   async function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -27,14 +32,22 @@ export function ChangePasswordForm() {
           newPassword: form.get("newPassword"),
         },
       );
-      router.replace(
+      await confirmSession(data);
+      window.location.replace(
         data.role === "ADMIN"
           ? "/admin"
           : `/${locale}/${data.role === "JUDGE" ? "judge" : "athlete"}`,
       );
-      router.refresh();
-    } catch {
-      setError(t("error"));
+    } catch (error) {
+      setError(
+        t(
+          error instanceof SessionEstablishmentError
+            ? "sessionNotEstablished"
+            : error instanceof SessionUnavailableError
+              ? "sessionUnavailable"
+              : "error",
+        ),
+      );
       setPending(false);
     }
   }
@@ -53,6 +66,7 @@ export function ChangePasswordForm() {
             name={name}
             type="password"
             autoComplete={complete}
+            disabled={!hydrated}
             required
             minLength={name === "currentPassword" ? 1 : 12}
             maxLength={72}
@@ -66,7 +80,7 @@ export function ChangePasswordForm() {
         </p>
       )}
       <button
-        disabled={pending}
+        disabled={!hydrated || pending}
         className="sivar-primary-button min-h-12 w-full p-3 text-sm font-black disabled:opacity-50"
       >
         {t(pending ? "saving" : "save")}

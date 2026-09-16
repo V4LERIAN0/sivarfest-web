@@ -40,5 +40,11 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      - name: Install test browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Check authentication flows
+        run: npm run test:auth
+
       - name: Build production application
         run: npm run build
