@@ -1,18 +1,21 @@
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { MeResponse } from "./auth.types";
+import { getServerApiUrl } from "@/lib/api-url";
+import type { MeResponse } from "./auth.types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8081/api";
+const API_URL = getServerApiUrl();
 
-export async function getCurrentUserServer() {
-  const cookieStore = await cookies();
-  const cookieHeader = cookieStore
-    .getAll()
-    .map((cookie) => `${cookie.name}=${cookie.value}`)
-    .join("; ");
+type ServerSession =
+  | { status: "authenticated"; user: MeResponse }
+  | { status: "unauthenticated" }
+  | { status: "unavailable" };
+
+export async function readCurrentSessionServer(): Promise<ServerSession> {
+  // Next's parsed cookies collapse duplicate names; forward the original header.
+  const cookieHeader = (await headers()).get("cookie") ?? "";
 
   if (!cookieHeader) {
-    return null;
+    return { status: "unauthenticated" };
   }
 
   try {
@@ -22,17 +25,34 @@ export async function getCurrentUserServer() {
         Cookie: cookieHeader,
       },
       cache: "no-store",
+      signal: AbortSignal.timeout(10_000),
     });
 
+    if (response.status === 401 || response.status === 403) {
+      return { status: "unauthenticated" };
+    }
     if (!response.ok) {
-      return null;
+      return { status: "unavailable" };
     }
 
     const user = (await response.json()) as MeResponse;
-    return user;
+    if (
+      !user ||
+      typeof user.id !== "number" ||
+      !["ADMIN", "JUDGE", "ATHLETE"].includes(user.role) ||
+      typeof user.mustChangePassword !== "boolean"
+    ) {
+      return { status: "unavailable" };
+    }
+    return { status: "authenticated", user };
   } catch {
-    return null;
+    return { status: "unavailable" };
   }
+}
+
+export async function getCurrentUserServer(): Promise<MeResponse | null> {
+  const session = await readCurrentSessionServer();
+  return session.status === "authenticated" ? session.user : null;
 }
 
 export async function requireAdminServer() {
